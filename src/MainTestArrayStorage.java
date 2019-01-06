@@ -21,11 +21,16 @@ public class MainTestArrayStorage {
 
         System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
+
+        if (ARRAY_STORAGE.update(r1)) {
+            System.out.println("update successfully");
+        }
         printAll();
         ARRAY_STORAGE.delete(r1.uuid);
         printAll();
         ARRAY_STORAGE.clear();
         printAll();
+
 
         System.out.println("Size: " + ARRAY_STORAGE.size());
     }

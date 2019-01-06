@@ -1,6 +1,4 @@
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Array based storage for Resumes
@@ -16,36 +14,40 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
-        if (r != null) {
-            boolean b = false;
-            for (int i = 0; i < size; i++) {
-                if (storage[i].uuid.equals(r.uuid)) {
-                    b = true;
-                }
-            }
-            if (!b) {
-                storage[size] = r;
-                size++;
-            }
+        if (r != null && containsTheIndex(r) == -1 && size < storage.length) {
+            storage[size] = r;
+            size++;
         }
     }
 
     Resume get(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(uuid)) return storage[i];
+        int position = containsTheIndex(uuid);
+        if (position > -1) {
+            return storage[position];
+        } else {
+            return null;
         }
-        return null;
     }
 
     void delete(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(uuid)) {
-                storage[i] = null;
-                System.arraycopy(storage, i + 1, storage, i, size - 1 - i);
-                storage[size - 1] = null;
-                size--;
+        int position = containsTheIndex(uuid);
+        if (position > -1) {
+            System.arraycopy(storage, position + 1, storage, position, size - 1 - position);
+            storage[size - 1] = null;
+            size--;
+        }
+    }
+
+    boolean update(Resume resume) {
+        boolean result = false;
+        if (storage != null) {
+            int position = containsTheIndex(resume);
+            if (position > -1) {
+                storage[position] = resume;
+               result = true;
             }
         }
+        return result;
     }
 
     /**
@@ -62,4 +64,21 @@ public class ArrayStorage {
     int size() {
         return size;
     }
+
+    int containsTheIndex(Resume resume) {
+        int index = containsTheIndex(resume.uuid);
+        return index;
+    }
+
+    int containsTheIndex(String uuid) {
+        int index = -1;
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid.equals(uuid)) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+
 }
