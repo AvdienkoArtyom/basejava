@@ -1,13 +1,17 @@
+package ru.mail.avdienkoartyom;
+
+import ru.mail.avdienkoartyom.Storage.SortedArrayStorage;
+import ru.mail.avdienkoartyom.model.Resume;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Interactive test for ArrayStorage implementation
+ * Interactive test for ru.mail.avdienkoartyom.storage.ru.mail.avdienkoartyom.Storage.ArrayStorage implementation
  * (just run, no need to understand)
  */
 public class MainArray {
-    private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    private final static SortedArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -32,7 +36,7 @@ public class MainArray {
                     break;
                 case "save":
                     r = new Resume();
-                    r.uuid = uuid;
+                    r.setUuid(uuid);
                     ARRAY_STORAGE.save(r);
                     printAll();
                     break;
@@ -49,10 +53,8 @@ public class MainArray {
                     break;
                 case "update":
                     r = new Resume();
-                    r.uuid = uuid;
-                    if (ARRAY_STORAGE.update(r)) {
-                        System.out.println("update successfully");
-                    }
+                    r.setUuid(uuid);
+                    ARRAY_STORAGE.update(r);
                     break;
                 case "exit":
                     return;
