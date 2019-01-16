@@ -5,7 +5,6 @@ import ru.mail.avdienkoartyom.model.Resume;
 import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
-
     public void save(Resume r) {
         if (size == STORAGE_LIMIT) {
             System.out.println("Нет места для записи в БД!");

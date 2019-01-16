@@ -8,9 +8,6 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage extends AbstractArrayStorage {
-    Resume[] storage = new Resume[10000];
-    int size;
-
     public void save(Resume r) {
         if (r != null && getIndex(r.getUuid()) == -1 && size < storage.length) {
             storage[size] = r;
