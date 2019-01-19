@@ -2,13 +2,14 @@ package ru.mail.avdienkoartyom;
 
 import ru.mail.avdienkoartyom.Storage.ArrayStorage;
 import ru.mail.avdienkoartyom.Storage.SortedArrayStorage;
+import ru.mail.avdienkoartyom.Storage.Storage;
 import ru.mail.avdienkoartyom.model.Resume;
 
 /**
  * Test for your ru.mail.avdienkoartyom.Storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    static final SortedArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
+    static final Storage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume();

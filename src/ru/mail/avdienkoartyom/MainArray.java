@@ -1,6 +1,7 @@
 package ru.mail.avdienkoartyom;
 
 import ru.mail.avdienkoartyom.Storage.SortedArrayStorage;
+import ru.mail.avdienkoartyom.Storage.Storage;
 import ru.mail.avdienkoartyom.model.Resume;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.io.InputStreamReader;
  * (just run, no need to understand)
  */
 public class MainArray {
-    private final static SortedArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
+    private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
