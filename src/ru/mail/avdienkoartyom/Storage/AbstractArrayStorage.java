@@ -10,38 +10,60 @@ public abstract class AbstractArrayStorage implements Storage {
     protected final Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
-    public Resume get(String uuid) {
-        if (!uuidCorrect(uuid)) {
-            return null;
+    public abstract int getIndex(String uuid);
+
+    public abstract void deleteElement(int index);
+
+    public abstract void saveElement(Resume resume);
+
+    @Override
+    public void save(Resume resume) {
+        if (size == STORAGE_LIMIT) {
+            System.out.println("Нет места для записи в БД!");
         } else {
-            int index = getIndex(uuid);
-            if (index > -1) {
-                System.out.println("Запись " + uuid + " в базе данных ru.mail.avdienkoartyom.model.Resume найдена.");
-                return storage[index];
+            if (getIndex(resume.getUuid()) < 0) {
+                if (size == 0) {
+                    storage[size] = resume;
+                    size++;
+                } else {
+                    saveElement(resume);
+                }
             } else {
-                System.out.println("Запись " + uuid + " в базе данных ru.mail.avdienkoartyom.model.Resume отсутствует.");
-                return null;
+                System.out.println("Запись " + resume.getUuid() + " в базе данных ru.mail.avdienkoartyom.model.Resume уже присутствовала.");
             }
+        }
+    }
+
+    public void delete(String uuid) {
+        int index = getIndex(uuid);
+        if (index > -1) {
+            deleteElement(index);
+        } else {
+            System.out.println("Запись " + uuid + " в базе данных ru.mail.avdienkoartyom.model.Resume отсутствует.");
+        }
+    }
+
+    public Resume get(String uuid) {
+        int index = getIndex(uuid);
+        if (index > -1) {
+            return storage[index];
+        } else {
+            System.out.println("Запись " + uuid + " в базе данных ru.mail.avdienkoartyom.model.Resume отсутствует.");
+            return null;
         }
     }
 
     public void update(Resume resume) {
-        if (resumeCorrect(resume)) {
-            int index = getIndex(resume.getUuid());
-            if (index > -1) {
-                storage[index] = resume;
-                System.out.println("Запись " + storage[index] + " в базе данных ru.mail.avdienkoartyom.model.Resume обновлена.");
-            } else {
-                System.out.println("Запись " + resume + " в базе данных ru.mail.avdienkoartyom.model.Resume отсутствует.");
-            }
-
+        int index = getIndex(resume.getUuid());
+        if (index > -1) {
+            storage[index] = resume;
+        } else {
+            System.out.println("Запись " + resume + " в базе данных ru.mail.avdienkoartyom.model.Resume отсутствует.");
         }
     }
 
-    public abstract int getIndex(String uuid);
-
     public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size );
+        return Arrays.copyOfRange(storage, 0, size);
     }
 
     public int size() {
@@ -49,27 +71,7 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public void clear() {
-        Arrays.fill(storage, 0, size - 1, null);
+        Arrays.fill(storage, 0, size, null);
         size = 0;
-    }
-
-    public boolean uuidCorrect(String uuid) {
-        if (uuid == null && uuid.equals("")) {
-            System.out.println("Ошибка, некорректное значение uuid!");
-            return false;
-        } else {
-            return true;
-        }
-
-    }
-
-    public boolean resumeCorrect(Resume resume) {
-        if (resume == null && uuidCorrect(resume.getUuid())) {
-            System.out.println("Ошибка, некорректное значение Resume!");
-            return false;
-        } else {
-            return true;
-
-        }
     }
 }
