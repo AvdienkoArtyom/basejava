@@ -8,7 +8,7 @@ import ru.mail.avdienkoartyom.model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    public int getIndex(String uuid) {
+    protected int getIndex(String uuid) {
         for (int i = 0; i < size; ++i) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
@@ -18,17 +18,12 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    public void saveElement(Resume resume) {
+    protected void saveElement(Resume resume, int index) {
         storage[size] = resume;
-        size++;
     }
 
     @Override
-    public void deleteElement(int index) {
+    protected void deleteElement(int index) {
         storage[index] = storage[size - 1];
-        storage[size - 1] = null;
-        size--;
-    }
-
-
+  }
 }

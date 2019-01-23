@@ -4,40 +4,40 @@ import ru.mail.avdienkoartyom.model.Resume;
 
 import java.util.Arrays;
 
-
 public abstract class AbstractArrayStorage implements Storage {
     protected static final int STORAGE_LIMIT = 10_000;
     protected final Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
-    public abstract int getIndex(String uuid);
+    protected abstract int getIndex(String uuid);
 
-    public abstract void deleteElement(int index);
+    protected abstract void deleteElement(int index);
 
-    public abstract void saveElement(Resume resume);
+    protected abstract void saveElement(Resume resume, int index);
 
-    @Override
     public void save(Resume resume) {
         if (size == STORAGE_LIMIT) {
             System.out.println("Нет места для записи в БД!");
-        } else {
-            if (getIndex(resume.getUuid()) < 0) {
-                if (size == 0) {
-                    storage[size] = resume;
-                    size++;
-                } else {
-                    saveElement(resume);
-                }
+        } else if (getIndex(resume.getUuid()) < 0) {
+            if (size == 0) {
+                storage[size] = resume;
+                size++;
             } else {
-                System.out.println("Запись " + resume.getUuid() + " в базе данных ru.mail.avdienkoartyom.model.Resume уже присутствовала.");
+                saveElement(resume, getIndex(resume.getUuid()));
+                size++;
             }
+        } else {
+            System.out.println("Запись " + resume.getUuid() + " в базе данных ru.mail.avdienkoartyom.model.Resume уже присутствовала.");
         }
+
     }
 
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index > -1) {
             deleteElement(index);
+            storage[size - 1] = null;
+            size--;
         } else {
             System.out.println("Запись " + uuid + " в базе данных ru.mail.avdienkoartyom.model.Resume отсутствует.");
         }
