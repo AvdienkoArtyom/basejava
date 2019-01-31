@@ -1,4 +1,4 @@
-package ru.mail.avdienkoartyom.Storage;
+package ru.mail.avdienkoartyom.storage;
 
 import ru.mail.avdienkoartyom.model.Resume;
 

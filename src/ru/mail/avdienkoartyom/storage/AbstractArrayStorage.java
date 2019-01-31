@@ -1,5 +1,8 @@
-package ru.mail.avdienkoartyom.Storage;
+package ru.mail.avdienkoartyom.storage;
 
+import ru.mail.avdienkoartyom.exception.ExistStorageException;
+import ru.mail.avdienkoartyom.exception.NoExistStorageException;
+import ru.mail.avdienkoartyom.exception.StorageException;
 import ru.mail.avdienkoartyom.model.Resume;
 
 import java.util.Arrays;
@@ -16,18 +19,18 @@ public abstract class AbstractArrayStorage implements Storage {
     protected abstract void saveElement(Resume resume, int index);
 
     public void save(Resume resume) {
+        int index = getIndex(resume.getUuid());
         if (size == STORAGE_LIMIT) {
-            System.out.println("Нет места для записи в БД!");
-        } else if (getIndex(resume.getUuid()) < 0) {
+            throw new StorageException("Storage Overflow", resume.getUuid());
+        } else if (index < 0) {
             if (size == 0) {
                 storage[size] = resume;
-                size++;
             } else {
-                saveElement(resume, getIndex(resume.getUuid()));
-                size++;
+                saveElement(resume, index);
             }
+            size++;
         } else {
-            System.out.println("Запись " + resume.getUuid() + " в базе данных ru.mail.avdienkoartyom.model.Resume уже присутствовала.");
+            throw new ExistStorageException(resume.getUuid());
         }
 
     }
@@ -39,7 +42,7 @@ public abstract class AbstractArrayStorage implements Storage {
             storage[size - 1] = null;
             size--;
         } else {
-            System.out.println("Запись " + uuid + " в базе данных ru.mail.avdienkoartyom.model.Resume отсутствует.");
+            throw new NoExistStorageException(uuid);
         }
     }
 
@@ -48,8 +51,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index > -1) {
             return storage[index];
         } else {
-            System.out.println("Запись " + uuid + " в базе данных ru.mail.avdienkoartyom.model.Resume отсутствует.");
-            return null;
+            throw new NoExistStorageException(uuid);
         }
     }
 
@@ -58,7 +60,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index > -1) {
             storage[index] = resume;
         } else {
-            System.out.println("Запись " + resume + " в базе данных ru.mail.avdienkoartyom.model.Resume отсутствует.");
+            throw new NoExistStorageException(resume.getUuid());
         }
     }
 

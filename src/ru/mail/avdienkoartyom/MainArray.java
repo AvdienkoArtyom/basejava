@@ -1,7 +1,7 @@
 package ru.mail.avdienkoartyom;
 
-import ru.mail.avdienkoartyom.Storage.SortedArrayStorage;
-import ru.mail.avdienkoartyom.Storage.Storage;
+import ru.mail.avdienkoartyom.storage.SortedArrayStorage;
+import ru.mail.avdienkoartyom.storage.Storage;
 import ru.mail.avdienkoartyom.model.Resume;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,8 +36,7 @@ public class MainArray {
                     System.out.println(ARRAY_STORAGE.size());
                     break;
                 case "save":
-                    r = new Resume();
-                    r.setUuid(uuid);
+                    r = new Resume(uuid);
                     ARRAY_STORAGE.save(r);
                     printAll();
                     break;
@@ -53,8 +52,7 @@ public class MainArray {
                     printAll();
                     break;
                 case "update":
-                    r = new Resume();
-                    r.setUuid(uuid);
+                    r = new Resume(uuid);
                     ARRAY_STORAGE.update(r);
                     break;
                 case "exit":
