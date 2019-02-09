@@ -10,6 +10,6 @@ public class MainReflection {
         Resume resume = new Resume();
         Class myClass = Resume.class;
         Method method = myClass.getDeclaredMethod("toString");
-        method.invoke(resume);
+        System.out.println(method.invoke(resume));
     }
 }
