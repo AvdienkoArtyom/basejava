@@ -8,13 +8,13 @@ import ru.mail.avdienkoartyom.model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected int getIndex(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         for (int i = 0; i < size; ++i) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
             }
         }
-        return -1;
+        return Integer.valueOf(-1);
     }
 
     @Override
@@ -25,5 +25,5 @@ public class ArrayStorage extends AbstractArrayStorage {
     @Override
     protected void deleteElement(int index) {
         storage[index] = storage[size - 1];
-  }
+    }
 }
