@@ -2,9 +2,9 @@ package ru.mail.avdienkoartyom.storage;
 
 import org.junit.Test;
 
-public class ListStorageTest extends AbstractStorageTest {
-    public ListStorageTest() {
-        super(new ListStorage());
+public class MapStorageTest extends AbstractStorageTest {
+    public MapStorageTest() {
+        super(new MapStorage());
     }
 
     @Test

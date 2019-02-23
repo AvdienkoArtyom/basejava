@@ -44,7 +44,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         storage[(Integer) searchKey] = resume;
     }
 
-
     public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, size);
     }

@@ -1,5 +1,7 @@
 package ru.mail.avdienkoartyom;
 
+import ru.mail.avdienkoartyom.storage.ListStorage;
+import ru.mail.avdienkoartyom.storage.MapStorage;
 import ru.mail.avdienkoartyom.storage.SortedArrayStorage;
 import ru.mail.avdienkoartyom.storage.Storage;
 import ru.mail.avdienkoartyom.model.Resume;
@@ -8,7 +10,7 @@ import ru.mail.avdienkoartyom.model.Resume;
  * Test for your ru.mail.avdienkoartyom.Storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    static final Storage ARRAY_STORAGE = new SortedArrayStorage();
+    static final Storage ARRAY_STORAGE = new MapStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume("uuid1");
@@ -28,7 +30,7 @@ public class MainTestArrayStorage {
         System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.getUuid()));
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
-        System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
+        //System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
 
         ARRAY_STORAGE.update(r1);

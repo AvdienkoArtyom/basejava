@@ -14,7 +14,7 @@ public class ArrayStorage extends AbstractArrayStorage {
                 return i;
             }
         }
-        return Integer.valueOf(-1);
+        return -1;
     }
 
     @Override

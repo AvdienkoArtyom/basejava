@@ -10,7 +10,7 @@ import ru.mail.avdienkoartyom.model.Resume;
 
 import static org.junit.Assert.*;
 
-public abstract class AbstractArrayStorageTest {
+public abstract class AbstractStorageTest {
     private Storage storage;
     private Resume RESUME_1 = new Resume(UUID_1);
     private Resume RESUME_2 = new Resume(UUID_2);
@@ -23,7 +23,7 @@ public abstract class AbstractArrayStorageTest {
     private static final String UUID_4 = "UUID_4";
     private static final String UUID_5 = "UUID_5";
 
-    protected AbstractArrayStorageTest(Storage storage) {
+    protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
 
@@ -74,6 +74,9 @@ public abstract class AbstractArrayStorageTest {
     public void getAll() {
         Resume[] resumes = new Resume[3];
         Resume[] resumesStorage = storage.getAll();
+        for (Resume resume1: resumesStorage){
+            System.out.println(resume1.getUuid());
+        }
         resumes[0] = RESUME_1;
         resumes[1] = RESUME_2;
         resumes[2] = RESUME_3;
