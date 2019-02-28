@@ -1,11 +1,13 @@
 package ru.mail.avdienkoartyom.storage;
 
 import ru.mail.avdienkoartyom.model.Resume;
+
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
-    protected final Map<String, Resume> resumes = new HashMap<>();
+    protected final Map<String, Resume> resumes = new LinkedHashMap<>();
 
     @Override
     public void clear() {
@@ -39,30 +41,20 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected Object getSearchKey(String uuid) {
-        String uuidKey = null;
-        for (Map.Entry<String, Resume> entry : resumes.entrySet()) {
-            if (entry.getValue().getUuid().equals(uuid)) {
-                uuidKey = entry.getKey();
-                System.out.println(uuid);
-            }
+        if (resumes.containsKey(uuid)) {
+            return uuid;
         }
-        return uuidKey;
+        return null;
     }
 
     @Override
     protected boolean isExist(Object index) {
-        return index != null;
+        return getSearchKey((String)index)!=null;
     }
 
     @Override
     public Resume[] getAll() {
-        int index = resumes.size();
-        Resume[] resume = new Resume[index];
-        for (Map.Entry<String, Resume> entry : resumes.entrySet()) {
-            index--;
-            resume[index] = entry.getValue();
-        }
-        return resume;
+            return  resumes.values().toArray(new Resume[]{});
     }
 
 }
