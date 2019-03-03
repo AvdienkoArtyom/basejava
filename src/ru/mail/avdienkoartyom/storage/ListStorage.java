@@ -3,6 +3,8 @@ package ru.mail.avdienkoartyom.storage;
 import ru.mail.avdienkoartyom.model.Resume;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
@@ -39,9 +41,9 @@ public class ListStorage extends AbstractStorage {
         resumes.remove(index);
     }
 
-    @Override
-    public Resume[] getAll() {
-        return resumes.toArray(new Resume[]{});
+    public List<Resume> getAllSorted() {
+        Collections.sort(resumes);
+        return resumes;
     }
 
     @Override

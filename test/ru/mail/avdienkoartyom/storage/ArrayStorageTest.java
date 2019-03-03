@@ -1,7 +1,7 @@
 package ru.mail.avdienkoartyom.storage;
 
 public class ArrayStorageTest extends AbstractStorageTest {
-    public ArrayStorageTest(){
+    public ArrayStorageTest() {
         super(new ArrayStorage());
     }
 }

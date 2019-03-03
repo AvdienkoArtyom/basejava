@@ -2,6 +2,8 @@ package ru.mail.avdienkoartyom.storage;
 
 import ru.mail.avdienkoartyom.model.Resume;
 
+import java.util.List;
+
 public interface Storage {
 
     void save(Resume resume);
@@ -10,7 +12,7 @@ public interface Storage {
 
     Resume get(String uuid);
 
-    Resume[] getAll();
+    List<Resume> getAllSorted();
 
     void delete(String uuid);
 

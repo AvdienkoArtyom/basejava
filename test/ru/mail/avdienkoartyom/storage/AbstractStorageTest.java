@@ -8,7 +8,10 @@ import ru.mail.avdienkoartyom.exception.NoExistStorageException;
 import ru.mail.avdienkoartyom.exception.StorageException;
 import ru.mail.avdienkoartyom.model.Resume;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
+
 
 public abstract class AbstractStorageTest {
     private Storage storage;
@@ -71,16 +74,14 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void getAll() {
+    public void getAllSorted() {
         Resume[] resumes = new Resume[3];
-        Resume[] resumesStorage = storage.getAll();
-        for (Resume resume1: resumesStorage){
-            System.out.println(resume1.getUuid());
-        }
+        List<Resume> list = storage.getAllSorted();
+        Resume[] resumesStorage = list.toArray(new Resume[]{});
         resumes[0] = RESUME_1;
         resumes[1] = RESUME_2;
         resumes[2] = RESUME_3;
-        Assert.assertArrayEquals(resumes,resumesStorage);
+        Assert.assertArrayEquals(resumes, resumesStorage);
         Assert.assertEquals(3, resumesStorage.length);
     }
 
