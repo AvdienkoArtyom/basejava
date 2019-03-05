@@ -4,11 +4,16 @@ import ru.mail.avdienkoartyom.exception.ExistStorageException;
 import ru.mail.avdienkoartyom.exception.NoExistStorageException;
 import ru.mail.avdienkoartyom.model.Resume;
 
+import java.util.Collections;
+import java.util.List;
+
 public abstract class AbstractStorage implements Storage {
 
     protected abstract void doSave(Resume resume, Object searchKey);
 
     protected abstract Resume doGet(Object searchKey);
+
+    protected abstract List<Resume> doGetAllSorted();
 
     protected abstract void doUpdate(Resume resume, Object searchKey);
 
@@ -16,7 +21,7 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract Object getSearchKey(String uuid);
 
-    protected abstract boolean isExist(Object index);
+    protected abstract boolean isExist(Object uuid);
 
     public void save(Resume resume) {
         Object searchKey = getNotExistedSearchKey(resume.getUuid());
@@ -26,6 +31,12 @@ public abstract class AbstractStorage implements Storage {
     public Resume get(String uuid) {
         Object searchKey = getExistedSearchKey(uuid);
         return doGet(searchKey);
+    }
+
+    public List<Resume> getAllSorted(){
+        List<Resume> list = doGetAllSorted();
+        Collections.sort(list);
+        return list;
     }
 
     public void update(Resume resume) {
@@ -53,4 +64,5 @@ public abstract class AbstractStorage implements Storage {
         }
         return searchKey;
     }
+
 }

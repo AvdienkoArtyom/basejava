@@ -44,9 +44,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         storage[(Integer) searchKey] = resume;
     }
 
-    public List<Resume> getAllSorted() {
+    public List<Resume> doGetAllSorted() {
         List<Resume> arrayList = new ArrayList<>(Arrays.asList(Arrays.copyOfRange(storage, 0, size)));
-        Collections.sort(arrayList);
         return arrayList;
     }
 

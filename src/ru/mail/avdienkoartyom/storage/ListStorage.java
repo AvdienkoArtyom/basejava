@@ -1,55 +1,51 @@
 package ru.mail.avdienkoartyom.storage;
 
 import ru.mail.avdienkoartyom.model.Resume;
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
-    protected final List<Resume> resumes = new ArrayList<>();
+    private final List<Resume> storage = new ArrayList<>();
 
     @Override
     public void clear() {
-        resumes.clear();
+        storage.clear();
     }
 
     @Override
     public int size() {
-        return resumes.size();
+        return storage.size();
     }
 
     @Override
     protected void doSave(Resume resume, Object searchKey) {
-        resumes.add(resume);
+        storage.add(resume);
     }
 
     @Override
     protected Resume doGet(Object searchKey) {
-        return resumes.get((Integer) searchKey);
+        return storage.get((Integer) searchKey);
     }
 
     @Override
     protected void doUpdate(Resume resume, Object searchKey) {
-        resumes.set((Integer) searchKey, resume);
+        storage.set((Integer) searchKey, resume);
     }
 
     @Override
     protected void doDelete(Object searchKey) {
         int index = (Integer) searchKey;
-        resumes.remove(index);
+        storage.remove(index);
     }
 
-    public List<Resume> getAllSorted() {
-        Collections.sort(resumes);
-        return resumes;
+    public List<Resume> doGetAllSorted() {
+        return storage;
     }
 
     @Override
     protected Integer getSearchKey(String uuid) {
-        for (int i = 0; i < resumes.size(); i++) {
-            if (uuid.equals(resumes.get(i).getUuid())) {
+        for (int i = 0; i < storage.size(); i++) {
+            if (uuid.equals(storage.get(i).getUuid())) {
                 return i;
             }
         }

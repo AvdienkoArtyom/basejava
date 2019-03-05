@@ -5,37 +5,7 @@ import ru.mail.avdienkoartyom.model.Resume;
 import java.util.*;
 
 public class MapUuidStorage extends AbstractStorage {
-    protected final Map<String, Resume> resumes = new LinkedHashMap<>();
-
-    @Override
-    public void clear() {
-        resumes.clear();
-    }
-
-    @Override
-    public int size() {
-        return resumes.size();
-    }
-
-    @Override
-    protected void doSave(Resume resume, Object searchKey) {
-        resumes.put(resume.getUuid(), resume);
-    }
-
-    @Override
-    protected Resume doGet(Object searchKey) {
-        return resumes.get(searchKey);
-    }
-
-    @Override
-    protected void doUpdate(Resume resume, Object searchKey) {
-        resumes.replace(resume.getUuid(), resume);
-    }
-
-    @Override
-    protected void doDelete(Object searchKey) {
-        resumes.remove(searchKey);
-    }
+    private final Map<String, Resume> storage = new LinkedHashMap<>();
 
     @Override
     protected Object getSearchKey(String uuid) {
@@ -43,15 +13,44 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object index) {
-        return resumes.containsKey(getSearchKey((String) index));
+    protected boolean isExist(Object uuid) {
+        return storage.containsKey(uuid);
     }
 
     @Override
-    public List<Resume> getAllSorted() {
+    protected void doSave(Resume resume, Object searchKey) {
+        storage.put(resume.getUuid(), resume);
+    }
+
+    @Override
+    protected Resume doGet(Object searchKey) {
+        return storage.get(searchKey);
+    }
+
+    @Override
+    protected void doUpdate(Resume resume, Object searchKey) {
+        storage.replace(resume.getUuid(), resume);
+    }
+
+    @Override
+    protected void doDelete(Object searchKey) {
+        storage.remove(searchKey);
+    }
+
+    @Override
+    public void clear() {
+        storage.clear();
+    }
+
+    @Override
+    public int size() {
+        return storage.size();
+    }
+
+    @Override
+    public List<Resume> doGetAllSorted() {
         List<Resume> list = new ArrayList<>();
-        Collections.addAll(list, resumes.values().toArray(new Resume[]{}));
-        Collections.sort(list);
+        Collections.addAll(list, storage.values().toArray(new Resume[]{}));
         return list;
     }
 }

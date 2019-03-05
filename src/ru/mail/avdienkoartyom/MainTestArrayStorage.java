@@ -1,16 +1,13 @@
 package ru.mail.avdienkoartyom;
 
-import ru.mail.avdienkoartyom.storage.ArrayStorage;
-import ru.mail.avdienkoartyom.storage.MapResumeStorage;
-import ru.mail.avdienkoartyom.storage.MapUuidStorage;
-import ru.mail.avdienkoartyom.storage.Storage;
+import ru.mail.avdienkoartyom.storage.*;
 import ru.mail.avdienkoartyom.model.Resume;
 
 /**
  * Test for your ru.mail.avdienkoartyom.Storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    static final Storage ARRAY_STORAGE = new ArrayStorage();
+    static final Storage ARRAY_STORAGE = new MapResumeStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume("uuid1", "Петр Петрович");
@@ -31,7 +28,6 @@ public class MainTestArrayStorage {
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
         //System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
-
 
         ARRAY_STORAGE.update(r1);
         printAll();
