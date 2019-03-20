@@ -43,19 +43,6 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void fullNameTest() {
-        assertEquals(RESUME_1.getFullName(), FULL_NAME_1);
-        assertEquals(RESUME_2.getFullName(), FULL_NAME_2);
-        assertEquals(RESUME_3.getFullName(), FULL_NAME_3);
-        assertEquals(storage.get(UUID_1).getFullName(), FULL_NAME_1);
-        assertEquals(storage.get(UUID_2).getFullName(), FULL_NAME_2);
-        assertEquals(storage.get(UUID_3).getFullName(), FULL_NAME_3);
-        assertEquals(storage.getAllSorted().get(0).getFullName(), FULL_NAME_1);
-        assertEquals(storage.getAllSorted().get(1).getFullName(), FULL_NAME_2);
-        assertEquals(storage.getAllSorted().get(2).getFullName(), FULL_NAME_3);
-    }
-
-    @Test
     public void save() {
         storage.save(RESUME_4);
         assertEquals(RESUME_4, storage.get(UUID_4));
@@ -81,7 +68,7 @@ public abstract class AbstractStorageTest {
     public void getAllSorted() {
         List<Resume> resumeList = storage.getAllSorted();
         assertEquals(3, resumeList.size());
-        assertEquals(resumeList, Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
+        assertEquals(Arrays.asList(RESUME_1, RESUME_2, RESUME_3), resumeList);
     }
 
     @Test
