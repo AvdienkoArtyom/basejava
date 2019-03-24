@@ -1,6 +1,7 @@
 package ru.mail.avdienkoartyom.storage;
 
 import ru.mail.avdienkoartyom.model.Resume;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     public List<Resume> doGetAllSorted() {
-        return storage;
+        return new ArrayList<>(storage);
     }
 
     @Override

@@ -5,10 +5,10 @@ import ru.mail.avdienkoartyom.model.Resume;
 import java.util.*;
 
 public class MapUuidStorage extends AbstractStorage {
-    private final Map<String, Resume> storage = new LinkedHashMap<>();
+    private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected String getSearchKey(String uuid) {
         return uuid;
     }
 

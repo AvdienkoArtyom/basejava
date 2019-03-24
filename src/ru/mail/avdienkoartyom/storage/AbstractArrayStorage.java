@@ -18,12 +18,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected void doSave(Resume resume, Object index) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage Overflow", resume.getUuid());
-        } else if ((Integer) index < 0) {
-            if (size == 0) {
-                storage[size] = resume;
-            } else {
-                saveElement(resume, (Integer) index);
-            }
+        } else {
+            saveElement(resume, (Integer) index);
             size++;
         }
     }
@@ -45,7 +41,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     public List<Resume> doGetAllSorted() {
-       return Arrays.asList(Arrays.copyOf(storage, size));
+        return Arrays.asList(Arrays.copyOf(storage, size));
     }
 
     public int size() {

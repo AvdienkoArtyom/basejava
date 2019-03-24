@@ -5,7 +5,7 @@ import ru.mail.avdienkoartyom.model.Resume;
 import java.util.*;
 
 public class MapResumeStorage extends AbstractStorage {
-    private final Map<String, Resume> storage = new LinkedHashMap<>();
+    private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
     protected Resume getSearchKey(String uuid) {
@@ -14,7 +14,7 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected boolean isExist(Object resume) {
-        return resume!=null;
+        return resume != null;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected void doDelete(Object resume) {
-        storage.remove(((Resume)resume).getUuid());
+        storage.remove(((Resume) resume).getUuid());
     }
 
     @Override
@@ -49,8 +49,6 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     public List<Resume> doGetAllSorted() {
-        List<Resume> list = new ArrayList<>();
-        Collections.addAll(list, storage.values().toArray(new Resume[]{}));
-        return list;
+        return new ArrayList<>(storage.values());
     }
 }

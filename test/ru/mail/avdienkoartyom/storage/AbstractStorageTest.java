@@ -19,16 +19,11 @@ public abstract class AbstractStorageTest {
     private static final String UUID_3 = "UUID_3";
     private static final String UUID_4 = "UUID_4";
     private static final String UUID_5 = "UUID_5";
-    private static final String FULL_NAME_1 = "Петр_1";
-    private static final String FULL_NAME_2 = "Петр_2";
-    private static final String FULL_NAME_3 = "Петр_3";
-    private static final String FULL_NAME_4 = "Петр_4";
-    private static final String FULL_NAME_5 = "Петр_5";
-    private Resume RESUME_1 = new Resume(UUID_1, FULL_NAME_1);
-    private Resume RESUME_2 = new Resume(UUID_2, FULL_NAME_2);
-    private Resume RESUME_3 = new Resume(UUID_3, FULL_NAME_3);
-    private Resume RESUME_4 = new Resume(UUID_4, FULL_NAME_4);
-    private Resume RESUME_5 = new Resume(UUID_5, FULL_NAME_5);
+    private Resume RESUME_1 = new Resume(UUID_1, "Петр_1");
+    private Resume RESUME_2 = new Resume(UUID_2, "Петр_2");
+    private Resume RESUME_3 = new Resume(UUID_3, "Петр_3");
+    private Resume RESUME_4 = new Resume(UUID_4, "Петр_4");
+    private Resume RESUME_5 = new Resume(UUID_5, "Петр_5");
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -61,7 +56,7 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = NoExistStorageException.class)
     public void getNoExist() {
-        storage.get("Dammy");
+        storage.get("Dummy");
     }
 
     @Test
