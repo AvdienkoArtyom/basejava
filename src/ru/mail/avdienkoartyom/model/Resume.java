@@ -6,12 +6,10 @@ import java.util.*;
  * Initial resume class
  */
 public class Resume implements Comparable<Resume> {
-    // Unique identifier
     private final String uuid;
     private final String fullName;
-    private List<String> contact = new ArrayList<>();
-
-    private Map<SectionType, List<AbstractSection>> map = new HashMap<>();
+    private Map<Contact, String> contactStringMap = new EnumMap<>(Contact.class);
+    private Map<SectionType, AbstractSection> sectionTypeAbstractSectionMap = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -22,12 +20,20 @@ public class Resume implements Comparable<Resume> {
         this.fullName = fullName;
     }
 
-    public Map<SectionType, List<AbstractSection>> getMap() {
-        return map;
+    public Map<SectionType, AbstractSection> getSectionTypeAbstractSectionMap() {
+        return sectionTypeAbstractSectionMap;
     }
 
-    public void setMap(Map<SectionType, List<AbstractSection>> map) {
-        this.map = map;
+    public void setSectionTypeAbstractSectionMap(Map<SectionType, AbstractSection> sectionTypeAbstractSectionMap) {
+        this.sectionTypeAbstractSectionMap = sectionTypeAbstractSectionMap;
+    }
+
+    public Map<Contact, String> getContactStringMap() {
+        return contactStringMap;
+    }
+
+    public void setContactStringMap(Map<Contact, String> contactStringMap) {
+        this.contactStringMap = contactStringMap;
     }
 
     public String getUuid() {
@@ -36,14 +42,6 @@ public class Resume implements Comparable<Resume> {
 
     public String getFullName() {
         return fullName;
-    }
-
-    public List<String> getContact() {
-        return contact;
-    }
-
-    public void setContact(List<String> contact) {
-        this.contact = contact;
     }
 
     @Override
@@ -72,34 +70,13 @@ public class Resume implements Comparable<Resume> {
         StringBuilder sb = new StringBuilder();
         sb.append("Полное имя: " + fullName + "\n");
         sb.append("Контакты: ");
-        for (String s : contact) {
-            sb.append(s + "\n");
-        }
-        sb.append("Личные качества:\n" + map.get(SectionType.PERSONAL).get(0).toString() + "\n");
-        sb.append("Позиция:\n" + map.get(SectionType.OBJECTIVE).get(0).toString() + "\n");
 
-        sb.append("Достижения:\n");
-
-        for (AbstractSection achievement : map.get(SectionType.ACHIEVEMENT)) {
-            sb.append(achievement.toString() + "\n");
+        for (Map.Entry<Contact, String> entry : contactStringMap.entrySet()) {
+            sb.append(entry.getKey().getTitle() + ": " + entry.getValue() + "\n");
         }
 
-        sb.append("Квалификация" + "\n");
-
-        for (AbstractSection qualifications : map.get(SectionType.QUALIFICATIONS)) {
-            sb.append(qualifications.toString() + "\n");
-        }
-
-        sb.append("Опыт работы");
-
-        for (AbstractSection experiens : map.get(SectionType.EXPERIENCE)) {
-            sb.append(experiens.toString() + "\n");
-        }
-
-        sb.append("Образование");
-
-        for (AbstractSection education : map.get(SectionType.EDUCATION)) {
-            sb.append(education.toString() + "\n");
+        for (Map.Entry<SectionType, AbstractSection> entry : sectionTypeAbstractSectionMap.entrySet()) {
+            sb.append(entry.getKey().getTitle() + ": " + entry.getValue() + "\n");
         }
 
         return new String(sb);

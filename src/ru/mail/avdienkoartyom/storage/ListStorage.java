@@ -39,7 +39,7 @@ public class ListStorage extends AbstractStorage {
         storage.remove(index);
     }
 
-    public List<Resume> doGetAllSorted() {
+    public List<Resume> doGetAll() {
         return new ArrayList<>(storage);
     }
 

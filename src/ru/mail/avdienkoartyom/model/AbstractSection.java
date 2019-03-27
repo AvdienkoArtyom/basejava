@@ -1,4 +1,4 @@
 package ru.mail.avdienkoartyom.model;
 
-public class AbstractSection {
+public abstract class AbstractSection {
 }
