@@ -1,19 +1,18 @@
 package ru.mail.avdienkoartyom.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Experience extends AbstractSection {
 
-    private List<Organization> organizationList = new ArrayList<>();
+    private List<Organization> organizationList;
+
+    public Experience(List<Organization> organizationList) {
+        this.organizationList = organizationList;
+    }
 
     public List<Organization> getOrganizationList() {
         return organizationList;
-    }
-
-    public void setOrganizationList(List<Organization> organizationList) {
-        this.organizationList = organizationList;
     }
 
     @Override
