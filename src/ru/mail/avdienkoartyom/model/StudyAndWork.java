@@ -3,11 +3,11 @@ package ru.mail.avdienkoartyom.model;
 import java.util.List;
 import java.util.Objects;
 
-public class Experience extends AbstractSection {
+public class StudyAndWork extends AbstractSection {
 
     private List<Organization> organizationList;
 
-    public Experience(List<Organization> organizationList) {
+    public StudyAndWork(List<Organization> organizationList) {
         this.organizationList = organizationList;
     }
 
@@ -28,7 +28,7 @@ public class Experience extends AbstractSection {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Experience that = (Experience) o;
+        StudyAndWork that = (StudyAndWork) o;
         return Objects.equals(organizationList, that.organizationList);
     }
 

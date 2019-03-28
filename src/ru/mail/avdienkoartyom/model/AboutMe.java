@@ -2,7 +2,7 @@ package ru.mail.avdienkoartyom.model;
 
 import java.util.Objects;
 
-public abstract class AboutMe extends AbstractSection {
+public class AboutMe extends AbstractSection {
     private String description;
 
     public AboutMe(String descriiption) {

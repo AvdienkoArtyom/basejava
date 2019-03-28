@@ -19,13 +19,11 @@ public class TestDataResume {
         resume.getContact().put(Contact.PROFILE_STACKOVERFLOW, "Stackoverflow");
         resume.getContact().put(Contact.HOMEPAGE, "Домашняя страница");
 
-        resume.getSection().put(SectionType.PERSONAL, new Personal("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
-
-        List<AbstractSection> listObjective = new ArrayList<>();
-        listObjective.add(new Objective("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
-        resume.getSection().put(SectionType.OBJECTIVE, new Objective("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
+        resume.getSection().put(SectionType.PERSONAL, new AboutMe("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
+        resume.getSection().put(SectionType.OBJECTIVE, new AboutMe("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
 
         ArrayList<String> achiList = new ArrayList<>();
+
         achiList.add("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.");
         achiList.add("Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.");
         achiList.add("Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM.Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.");
@@ -33,10 +31,10 @@ public class TestDataResume {
         achiList.add("Создание JavaEE фреймворка для отказоустойчивого взаимодействия слабо-связанных сервисов (SOA-base архитектура, JAX-WS, JMS, AS Glassfish). Сбор статистики сервисов и информации о состоянии через систему мониторинга Nagios. Реализация онлайн клиента для администрирования и мониторинга системы по JMX (Jython/ Django).");
         achiList.add("Реализация протоколов по приему платежей всех основных платежных системы России (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.");
 
-        resume.getSection().put(SectionType.ACHIEVEMENT,
-                new Achievement(achiList));
+        resume.getSection().put(SectionType.ACHIEVEMENT, new KnowledgeAndSkill(achiList));
 
         ArrayList<String> experList = new ArrayList<>();
+
         experList.add("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2.");
         experList.add("Version control: Subversion, Git, Mercury, ClearCase, Perforce.");
         experList.add("DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle, MySQL, SQLite, MS SQL, HSQLDB.");
@@ -50,9 +48,8 @@ public class TestDataResume {
         experList.add("Администрирование Hudson/Jenkins, Ant + custom task, SoapUI, JPublisher, Flyway, Nagios, iReport, OpenCmis, Bonita, pgBouncer.");
         experList.add("Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектрирования, архитектурных шаблонов, UML, функционального программирования.");
         experList.add("Родной русский, английский \"upper intermediate\".");
-        resume.getSection().put(SectionType.QUALIFICATIONS,
-                new Qualification(experList));
 
+        resume.getSection().put(SectionType.QUALIFICATIONS, new KnowledgeAndSkill(experList));
 
         List<Organization> orgExpList = new ArrayList<>();
 
@@ -65,9 +62,7 @@ public class TestDataResume {
         orgExpList.add(new Organization("Wrike", LocalDate.of(2014, Month.OCTOBER, 1), LocalDate.of(2016, Month.JANUARY, 1), "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."));
         orgExpList.add(new Organization("Java Online Projects", LocalDate.of(2013, Month.OCTOBER, 1), LocalDate.now(), "Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок."));
 
-        Experience experience = new Experience(orgExpList);
-        resume.getSection().put(SectionType.EXPERIENCE, experience);
-
+        resume.getSection().put(SectionType.EXPERIENCE, new StudyAndWork(orgExpList));
 
         List<Organization>  orgEduList = new ArrayList<>();
         orgEduList.add(new Organization("Заочная физико-техническая школа при МФТИ", LocalDate.of(1984, Month.SEPTEMBER, 1), LocalDate.of(1987, Month.JUNE, 1), "Закончил с отличием"));
@@ -78,8 +73,7 @@ public class TestDataResume {
         orgEduList.add(new Organization("Luxoft", LocalDate.of(2011, Month.MARCH, 1), LocalDate.of(2011, Month.APRIL, 1), "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\""));
         orgEduList.add(new Organization("Coursera", LocalDate.of(2013, Month.MARCH, 1), LocalDate.of(2011, Month.MAY, 1), "\"Functional Programming Principles in Scala\" by Martin Odersky"));
 
-        Education education = new Education(orgEduList);
-        resume.getSection().put(SectionType.EDUCATION, education);
+        resume.getSection().put(SectionType.EDUCATION,  new StudyAndWork(orgEduList));
 
         System.out.println(resume.toString());
     }
