@@ -1,6 +1,6 @@
 package ru.mail.avdienkoartyom.model;
 
-public enum Contact {
+public enum ContactType {
     TELEPHONE("Телефон"),
     SKYPE("Skype"),
     EMAIL("Почта"),
@@ -15,7 +15,7 @@ public enum Contact {
         return title;
     }
 
-    Contact(String title) {
+    ContactType(String title) {
         this.title = title;
     }
 }

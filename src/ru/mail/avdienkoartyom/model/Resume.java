@@ -8,7 +8,7 @@ import java.util.*;
 public class Resume implements Comparable<Resume> {
     private final String uuid;
     private final String fullName;
-    private Map<Contact, String> contact = new EnumMap<>(Contact.class);
+    private Map<ContactType, String> contact = new EnumMap<>(ContactType.class);
     private Map<SectionType, AbstractSection> section = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
@@ -28,11 +28,11 @@ public class Resume implements Comparable<Resume> {
         this.section = section;
     }
 
-    public Map<Contact, String> getContact() {
+    public Map<ContactType, String> getContact() {
         return contact;
     }
 
-    public void setContact(Map<Contact, String> contact) {
+    public void setContact(Map<ContactType, String> contact) {
         this.contact = contact;
     }
 
@@ -72,7 +72,7 @@ public class Resume implements Comparable<Resume> {
         sb.append("Полное имя: " + fullName + "\n");
         sb.append("Контакты: ");
 
-        for (Map.Entry<Contact, String> entry : contact.entrySet()) {
+        for (Map.Entry<ContactType, String> entry : contact.entrySet()) {
             sb.append(entry.getKey().getTitle() + ": " + entry.getValue() + "\n");
         }
 

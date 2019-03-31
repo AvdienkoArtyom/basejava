@@ -11,16 +11,16 @@ public class TestDataResume {
 
         Resume resume = new Resume("Григорий Кислин");
 
-        resume.getContact().put(Contact.TELEPHONE, "+7(921) 855-0482");
-        resume.getContact().put(Contact.EMAIL, "gkislin@yandex.ru");
-        resume.getContact().put(Contact.SKYPE, "grigory.kislin");
-        resume.getContact().put(Contact.PROFILE_LINKEDIN, "LinkedIn");
-        resume.getContact().put(Contact.PROFILE_GITHUB, "GitHub");
-        resume.getContact().put(Contact.PROFILE_STACKOVERFLOW, "Stackoverflow");
-        resume.getContact().put(Contact.HOMEPAGE, "Домашняя страница");
+        resume.getContact().put(ContactType.TELEPHONE, "+7(921) 855-0482");
+        resume.getContact().put(ContactType.EMAIL, "gkislin@yandex.ru");
+        resume.getContact().put(ContactType.SKYPE, "grigory.kislin");
+        resume.getContact().put(ContactType.PROFILE_LINKEDIN, "LinkedIn");
+        resume.getContact().put(ContactType.PROFILE_GITHUB, "GitHub");
+        resume.getContact().put(ContactType.PROFILE_STACKOVERFLOW, "Stackoverflow");
+        resume.getContact().put(ContactType.HOMEPAGE, "Домашняя страница");
 
-        resume.getSection().put(SectionType.PERSONAL, new AboutMe("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
-        resume.getSection().put(SectionType.OBJECTIVE, new AboutMe("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
+        resume.getSection().put(SectionType.PERSONAL, new SympleTextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
+        resume.getSection().put(SectionType.OBJECTIVE, new SympleTextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
 
         ArrayList<String> achiList = new ArrayList<>();
 
@@ -31,7 +31,7 @@ public class TestDataResume {
         achiList.add("Создание JavaEE фреймворка для отказоустойчивого взаимодействия слабо-связанных сервисов (SOA-base архитектура, JAX-WS, JMS, AS Glassfish). Сбор статистики сервисов и информации о состоянии через систему мониторинга Nagios. Реализация онлайн клиента для администрирования и мониторинга системы по JMX (Jython/ Django).");
         achiList.add("Реализация протоколов по приему платежей всех основных платежных системы России (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.");
 
-        resume.getSection().put(SectionType.ACHIEVEMENT, new KnowledgeAndSkill(achiList));
+        resume.getSection().put(SectionType.ACHIEVEMENT, new ListSection(achiList));
 
         ArrayList<String> experList = new ArrayList<>();
 
@@ -49,7 +49,7 @@ public class TestDataResume {
         experList.add("Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектрирования, архитектурных шаблонов, UML, функционального программирования.");
         experList.add("Родной русский, английский \"upper intermediate\".");
 
-        resume.getSection().put(SectionType.QUALIFICATIONS, new KnowledgeAndSkill(experList));
+        resume.getSection().put(SectionType.QUALIFICATIONS, new ListSection(experList));
 
         List<Organization> orgExpList = new ArrayList<>();
 
@@ -62,7 +62,7 @@ public class TestDataResume {
         orgExpList.add(new Organization("Wrike", LocalDate.of(2014, Month.OCTOBER, 1), LocalDate.of(2016, Month.JANUARY, 1), "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."));
         orgExpList.add(new Organization("Java Online Projects", LocalDate.of(2013, Month.OCTOBER, 1), LocalDate.now(), "Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок."));
 
-        resume.getSection().put(SectionType.EXPERIENCE, new StudyAndWork(orgExpList));
+        resume.getSection().put(SectionType.EXPERIENCE, new OrganizationSection(orgExpList));
 
         List<Organization>  orgEduList = new ArrayList<>();
         orgEduList.add(new Organization("Заочная физико-техническая школа при МФТИ", LocalDate.of(1984, Month.SEPTEMBER, 1), LocalDate.of(1987, Month.JUNE, 1), "Закончил с отличием"));
@@ -73,7 +73,7 @@ public class TestDataResume {
         orgEduList.add(new Organization("Luxoft", LocalDate.of(2011, Month.MARCH, 1), LocalDate.of(2011, Month.APRIL, 1), "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\""));
         orgEduList.add(new Organization("Coursera", LocalDate.of(2013, Month.MARCH, 1), LocalDate.of(2011, Month.MAY, 1), "\"Functional Programming Principles in Scala\" by Martin Odersky"));
 
-        resume.getSection().put(SectionType.EDUCATION,  new StudyAndWork(orgEduList));
+        resume.getSection().put(SectionType.EDUCATION,  new OrganizationSection(orgEduList));
 
         System.out.println(resume.toString());
     }
