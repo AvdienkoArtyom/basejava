@@ -19,7 +19,7 @@ public class OrganizationSection extends AbstractSection {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Organization organization : organizationList) {
-            sb.append(organization.toString() + "\n");
+            sb.append(organization.toString());
         }
         return sb.toString();
     }

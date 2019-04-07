@@ -77,7 +77,7 @@ public class Resume implements Comparable<Resume> {
         }
 
         for (Map.Entry<SectionType, AbstractSection> entry : section.entrySet()) {
-            sb.append(entry.getKey().getTitle() + ": " + entry.getValue() + "\n");
+            sb.append(entry.getKey().getTitle() + ":\n" + entry.getValue() + "\n");
         }
 
         return new String(sb);

@@ -35,3 +35,4 @@ public class SympleTextSection extends AbstractSection {
         return Objects.hash(description);
     }
 }
+//
