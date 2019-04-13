@@ -24,9 +24,9 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         this.directory = directory;
     }
 
-    protected abstract void doWrite(Resume resume, File file);
+    protected abstract void doWrite(Resume resume, File file) throws IOException;
 
-    protected abstract Resume doRead(File file);
+    protected abstract Resume doRead(File file) throws IOException;
 
     @Override
     protected void doSave(Resume resume, File file) {
@@ -34,36 +34,46 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             file.createNewFile();
             doWrite(resume, file);
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("IO error to save", file.getName(), e);
         }
 
     }
 
     @Override
     protected Resume doGet(File file) {
-        return doRead(file);
+        try {
+            return doRead(file);
+        } catch (IOException e) {
+            throw new StorageException("IO error to get resume", file.getName(), e);
+        }
     }
 
     @Override
     protected List<Resume> doGetAll() {
         Resume[] resumes = new Resume[size()];
         File[] files = directory.listFiles();
+        if (files == null) {
+            throw new StorageException("Error, failed to get file list", null);
+        }
         for (int i = 0; i < resumes.length; i++) {
-            resumes[i] = doRead(files[i]);
+            resumes[i] = doGet(files[i]);
         }
         return Arrays.asList(resumes);
     }
 
     @Override
     protected void doUpdate(Resume resume, File file) {
-        doWrite(resume, file);
+        try {
+            doWrite(resume, file);
+        } catch (IOException e) {
+            throw new StorageException("IO error to update", file.getName(), e);
+        }
     }
 
     @Override
     protected void doDelete(File file) {
-        for (File f : directory.listFiles()) {
-            if (f.getName().equals(file.getName()))
-                f.delete();
+        if (!file.delete()) {
+            throw new StorageException("Delete error", file.getName());
         }
     }
 
@@ -79,14 +89,21 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        for (File f : directory.listFiles()) {
-            if (!f.isDirectory())
-                f.delete();
+        File[] files = directory.listFiles();
+        if (files == null) {
+            throw new StorageException("Error, failed to get file list", null);
+        }
+        for (File f : files) {
+            doDelete(f);
         }
     }
 
     @Override
     public int size() {
-        return directory.listFiles().length;
+        String[] files = directory.list();
+        if (files == null) {
+            throw new StorageException("Error, failed to get file list", null);
+        }
+        return files.length;
     }
 }

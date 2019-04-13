@@ -6,10 +6,10 @@ public class MainFile {
     public static void main(String[] args) {
 
         File file = new File("C:\\Users\\Artem\\basejava\\src");
-        TraversingFileRecursion(file);
+        traversingFileRecursion(file);
     }
 
-    public static void TraversingFileRecursion(File file) {
+    public static void traversingFileRecursion(File file) {
         if (!file.exists()) {
             System.out.println("Folder or file is not exists!");
         }
@@ -18,7 +18,7 @@ public class MainFile {
             File[] files = file.listFiles();
             for (File f : files) {
                 if (f.isDirectory()) {
-                    TraversingFileRecursion(f);
+                    traversingFileRecursion(f);
                 } else {
                     System.out.println("File: " + file.getName());
                 }

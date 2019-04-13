@@ -10,18 +10,18 @@ public class TestDataResume {
 
     public static void main(String[] args) {
 
-        Resume resume = new Resume("Григорий Кислин");
+        Resume resume1 = new Resume("Григорий Кислин");
 
-        resume.getContact().put(ContactType.TELEPHONE, "+7(921) 855-0482");
-        resume.getContact().put(ContactType.EMAIL, "gkislin@yandex.ru");
-        resume.getContact().put(ContactType.SKYPE, "grigory.kislin");
-        resume.getContact().put(ContactType.PROFILE_LINKEDIN, "LinkedIn");
-        resume.getContact().put(ContactType.PROFILE_GITHUB, "GitHub");
-        resume.getContact().put(ContactType.PROFILE_STACKOVERFLOW, "Stackoverflow");
-        resume.getContact().put(ContactType.HOMEPAGE, "Домашняя страница");
+        resume1.getContact().put(ContactType.TELEPHONE, "+7(921) 855-0482");
+        resume1.getContact().put(ContactType.EMAIL, "gkislin@yandex.ru");
+        resume1.getContact().put(ContactType.SKYPE, "grigory.kislin");
+        resume1.getContact().put(ContactType.PROFILE_LINKEDIN, "LinkedIn");
+        resume1.getContact().put(ContactType.PROFILE_GITHUB, "GitHub");
+        resume1.getContact().put(ContactType.PROFILE_STACKOVERFLOW, "Stackoverflow");
+        resume1.getContact().put(ContactType.HOMEPAGE, "Домашняя страница");
 
-        resume.getSection().put(SectionType.PERSONAL, new SympleTextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
-        resume.getSection().put(SectionType.OBJECTIVE, new SympleTextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
+        resume1.getSection().put(SectionType.PERSONAL, new SympleTextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
+        resume1.getSection().put(SectionType.OBJECTIVE, new SympleTextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
 
         ArrayList<String> achiList = new ArrayList<>();
 
@@ -32,7 +32,7 @@ public class TestDataResume {
         achiList.add("Создание JavaEE фреймворка для отказоустойчивого взаимодействия слабо-связанных сервисов (SOA-base архитектура, JAX-WS, JMS, AS Glassfish). Сбор статистики сервисов и информации о состоянии через систему мониторинга Nagios. Реализация онлайн клиента для администрирования и мониторинга системы по JMX (Jython/ Django).");
         achiList.add("Реализация протоколов по приему платежей всех основных платежных системы России (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.");
 
-        resume.getSection().put(SectionType.ACHIEVEMENT, new ListSection(achiList));
+        resume1.getSection().put(SectionType.ACHIEVEMENT, new ListSection(achiList));
 
         ArrayList<String> experList = new ArrayList<>();
 
@@ -50,11 +50,9 @@ public class TestDataResume {
         experList.add("Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектрирования, архитектурных шаблонов, UML, функционального программирования.");
         experList.add("Родной русский, английский \"upper intermediate\".");
 
-        resume.getSection().put(SectionType.QUALIFICATIONS, new ListSection(experList));
+        resume1.getSection().put(SectionType.QUALIFICATIONS, new ListSection(experList));
 
         List<Organization> orgExpList = new ArrayList<>();
-
-        List<Period> periodListWork = new ArrayList<>();
 
         orgExpList.add(new Organization("Java Online Projects", Arrays.asList(new Period(LocalDate.of(2013, Month.OCTOBER, 1), LocalDate.now(), "Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок."))));
         orgExpList.add(new Organization("Wrike", Arrays.asList(new Period(LocalDate.of(2014, Month.OCTOBER, 1), LocalDate.of(2016, Month.JANUARY, 1), "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))));
@@ -65,7 +63,7 @@ public class TestDataResume {
         orgExpList.add(new Organization("Siemens AG", Arrays.asList(new Period(LocalDate.of(2005, Month.JANUARY, 1), LocalDate.of(2007, Month.FEBRUARY, 1), "Разработчик ПО", "Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix)."))));
         orgExpList.add(new Organization("Alcatel", Arrays.asList(new Period(LocalDate.of(1997, Month.SEPTEMBER, 1), LocalDate.of(2005, Month.JANUARY, 1), "Инженер по аппаратному и программному тестированию", "Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM)."))));
 
-        resume.getSection().put(SectionType.EXPERIENCE, new OrganizationSection(orgExpList));
+        resume1.getSection().put(SectionType.EXPERIENCE, new OrganizationSection(orgExpList));
 
         List<Organization> orgEduList = new ArrayList<>();
         orgEduList.add(new Organization("Coursera", Arrays.asList(new Period(LocalDate.of(2013, Month.MARCH, 1), LocalDate.of(2011, Month.MAY, 1), "\"Functional Programming Principles in Scala\" by Martin Odersky"))));
@@ -75,8 +73,45 @@ public class TestDataResume {
         orgEduList.add(new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", Arrays.asList(new Period(LocalDate.of(1987, Month.SEPTEMBER, 1), LocalDate.of(1993, Month.JULY, 1), "Инженер (программист Fortran, C)"), new Period(LocalDate.of(1993, Month.SEPTEMBER, 1), LocalDate.of(1996, Month.JULY, 1), "Аспирантура (программист С, С++)"))));
         orgEduList.add(new Organization("Заочная физико-техническая школа при МФТИ", Arrays.asList(new Period(LocalDate.of(1984, Month.SEPTEMBER, 1), LocalDate.of(1987, Month.JUNE, 1), "Закончил с отличием"))));
 
-        resume.getSection().put(SectionType.EDUCATION, new OrganizationSection(orgEduList));
+        resume1.getSection().put(SectionType.EDUCATION, new OrganizationSection(orgEduList));
 
-        System.out.println(resume.toString());
+        System.out.println(resume1.toString());
+
+        Resume resume2 = new Resume("Авдиенко Артем");
+
+        resume2.getContact().put(ContactType.TELEPHONE, "+7(000) 000-0000");
+        resume2.getContact().put(ContactType.EMAIL, "email@yandex.ru");
+        resume2.getContact().put(ContactType.SKYPE, "skype_account");
+        resume2.getContact().put(ContactType.PROFILE_GITHUB, "GitHub");
+
+        resume2.getSection().put(SectionType.PERSONAL, new SympleTextSection("Аналитический склад ума, креативность, инициативность"));
+        resume2.getSection().put(SectionType.OBJECTIVE, new SympleTextSection("Учусь програмированию на Java."));
+
+        ArrayList<String> achiList2 = new ArrayList<>();
+
+        achiList2.add("С 2019 года начал изучать курс BaseJava");
+
+        resume2.getSection().put(SectionType.ACHIEVEMENT, new ListSection(achiList2));
+
+        ArrayList<String> experList2 = new ArrayList<>();
+
+        experList2.add("Java core");
+
+        resume2.getSection().put(SectionType.QUALIFICATIONS, new ListSection(experList2));
+
+        List<Organization> orgExpList2 = new ArrayList<>();
+
+        orgExpList2.add(new Organization("No name Organization.", Arrays.asList(new Period(LocalDate.of(2008, Month.OCTOBER, 1), LocalDate.now(), "Разнорабочий", "Продажи, переносы движимого имущества."))));
+
+        resume2.getSection().put(SectionType.EXPERIENCE, new OrganizationSection(orgExpList2));
+
+        List<Organization> orgEduList2 = new ArrayList<>();
+        orgEduList2.add(new Organization("ВУМО РФ", Arrays.asList(new Period(LocalDate.of(2004, Month.AUGUST, 1), LocalDate.of(2008, Month.MAY, 1), "Менеджер социально-культурной деятельности.(Неоконченое высшее)"))));
+        orgEduList2.add(new Organization("СОШ № 34 Южно - Сахалинска", Arrays.asList(new Period(LocalDate.of(1993, Month.SEPTEMBER, 1), LocalDate.of(2003, Month.MAY, 1), "Обучение по системе Занкова(любой предпологаемый ответ ученика являеться правильным.)"))));
+
+        resume2.getSection().put(SectionType.EDUCATION, new OrganizationSection(orgEduList2));
+
+        System.out.println(resume2.toString());
+
     }
 }
