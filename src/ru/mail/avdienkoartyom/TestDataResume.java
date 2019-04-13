@@ -20,8 +20,8 @@ public class TestDataResume {
         resume1.getContact().put(ContactType.PROFILE_STACKOVERFLOW, "Stackoverflow");
         resume1.getContact().put(ContactType.HOMEPAGE, "Домашняя страница");
 
-        resume1.getSection().put(SectionType.PERSONAL, new SympleTextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
-        resume1.getSection().put(SectionType.OBJECTIVE, new SympleTextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
+        resume1.getSection().put(SectionType.PERSONAL, new SimpleTextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
+        resume1.getSection().put(SectionType.OBJECTIVE, new SimpleTextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
 
         ArrayList<String> achiList = new ArrayList<>();
 
@@ -84,8 +84,8 @@ public class TestDataResume {
         resume2.getContact().put(ContactType.SKYPE, "skype_account");
         resume2.getContact().put(ContactType.PROFILE_GITHUB, "GitHub");
 
-        resume2.getSection().put(SectionType.PERSONAL, new SympleTextSection("Аналитический склад ума, креативность, инициативность"));
-        resume2.getSection().put(SectionType.OBJECTIVE, new SympleTextSection("Учусь програмированию на Java."));
+        resume2.getSection().put(SectionType.PERSONAL, new SimpleTextSection("Аналитический склад ума, креативность, инициативность"));
+        resume2.getSection().put(SectionType.OBJECTIVE, new SimpleTextSection("Учусь програмированию на Java."));
 
         ArrayList<String> achiList2 = new ArrayList<>();
 

@@ -2,10 +2,10 @@ package ru.mail.avdienkoartyom.model;
 
 import java.util.Objects;
 
-public class SympleTextSection extends AbstractSection {
+public class SimpleTextSection extends AbstractSection {
     private String description;
 
-    public SympleTextSection(String descriiption) {
+    public SimpleTextSection(String descriiption) {
         this.description = descriiption;
     }
 
@@ -26,7 +26,7 @@ public class SympleTextSection extends AbstractSection {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SympleTextSection aboutMe = (SympleTextSection) o;
+        SimpleTextSection aboutMe = (SimpleTextSection) o;
         return Objects.equals(description, aboutMe.description);
     }
 
