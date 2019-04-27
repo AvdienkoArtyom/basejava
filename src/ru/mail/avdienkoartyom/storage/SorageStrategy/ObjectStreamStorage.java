@@ -1,11 +1,11 @@
-package ru.mail.avdienkoartyom.storage;
+package ru.mail.avdienkoartyom.storage.SorageStrategy;
 
 import ru.mail.avdienkoartyom.exception.StorageException;
 import ru.mail.avdienkoartyom.model.Resume;
 
 import java.io.*;
 
-public class ObjectStreamStorage implements DiskStrategy {
+public class ObjectStreamStorage implements StorageStrategy {
 
     @Override
     public void doWrite(Resume resume, OutputStream outputStream) {

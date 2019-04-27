@@ -1,7 +1,6 @@
 package ru.mail.avdienkoartyom;
 
 import ru.mail.avdienkoartyom.storage.MapResumeStorage;
-import ru.mail.avdienkoartyom.storage.MapUuidStorage;
 import ru.mail.avdienkoartyom.storage.Storage;
 import ru.mail.avdienkoartyom.model.Resume;
 

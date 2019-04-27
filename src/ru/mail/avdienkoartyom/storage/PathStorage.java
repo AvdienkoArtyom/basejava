@@ -2,12 +2,11 @@ package ru.mail.avdienkoartyom.storage;
 
 import ru.mail.avdienkoartyom.exception.StorageException;
 import ru.mail.avdienkoartyom.model.Resume;
+import ru.mail.avdienkoartyom.storage.SorageStrategy.StorageStrategy;
 
 import java.io.*;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,46 +15,36 @@ import java.util.stream.Collectors;
 public class PathStorage extends AbstractStorage<Path> {
 
     private Path directory;
-    private DiskStrategy diskStrategy;
+    private StorageStrategy storageStrategy;
 
-    public PathStorage(String dir, DiskStrategy diskStrategy) {
-        Objects.requireNonNull(diskStrategy, "diskStrategy must not be null");
-        this.diskStrategy = diskStrategy;
-        directory = Paths.get(dir);
+    public PathStorage(Path path, StorageStrategy storageStrategy) {
+        Objects.requireNonNull(storageStrategy, "storageStrategy must not be null");
+        this.storageStrategy = storageStrategy;
+        directory = path;
         Objects.requireNonNull(directory, "directory must not be null");
         if (!Files.isDirectory(directory)) {
-            throw new IllegalArgumentException(dir + " is not directory.");
+            throw new IllegalArgumentException(path + " is not directory.");
         }
         if (!Files.isReadable(directory) || !Files.isWritable(directory)) {
-            throw new IllegalArgumentException(dir + " is not readeble/writeble.");
+            throw new IllegalArgumentException(path + " is not readeble/writeble.");
         }
         this.directory = directory;
-    }
-
-
-    public void doWrite(Resume resume, OutputStream outputStream) {
-        diskStrategy.doWrite(resume, outputStream);
-    }
-
-    public Resume doRead(InputStream inputStream) {
-        return diskStrategy.doRead(inputStream);
     }
 
     @Override
     protected void doSave(Resume resume, Path path) {
         try {
             Files.createFile(path);
-            doWrite(resume, new FileOutputStream(path.toFile()));
+            storageStrategy.doWrite(resume, new FileOutputStream(path.toFile()));
         } catch (IOException e) {
             throw new StorageException("IO error to save", path.toString(), e);
         }
-
     }
 
     @Override
     protected Resume doGet(Path path) {
         try {
-            return doRead(new BufferedInputStream(new FileInputStream(path.toFile())));
+            return storageStrategy.doRead(new BufferedInputStream(new FileInputStream(path.toFile())));
         } catch (IOException e) {
             throw new StorageException("IO error to get resume", path.toString(), e);
         }
@@ -79,7 +68,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Resume resume, Path path) {
         try {
-            doWrite(resume, new BufferedOutputStream(new FileOutputStream(path.toFile())));
+            storageStrategy.doWrite(resume, new BufferedOutputStream(new FileOutputStream(path.toFile())));
         } catch (IOException e) {
             throw new StorageException("IO error to update", path.getFileName().toString(), e);
         }
@@ -96,7 +85,7 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected Path getSearchKey(String uuid) {
-        return Paths.get(directory.toAbsolutePath() + uuid);
+        return directory.resolve(uuid);
     }
 
     @Override

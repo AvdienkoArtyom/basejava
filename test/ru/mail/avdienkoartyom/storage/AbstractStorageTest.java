@@ -8,10 +8,8 @@ import ru.mail.avdienkoartyom.exception.NoExistStorageException;
 import ru.mail.avdienkoartyom.model.*;
 
 import java.io.File;
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -67,9 +65,11 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAllSorted() {
-        List<Resume> resumeList = storage.getAllSorted();
-        assertEquals(3, resumeList.size());
-        assertEquals(Arrays.asList(RESUME_1, RESUME_2, RESUME_3), resumeList);
+        List<Resume> resumeListTest = storage.getAllSorted();
+        assertEquals(3, resumeListTest.size());
+        List<Resume> resumeList = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        Collections.sort(resumeList);
+        assertEquals(resumeList, resumeListTest);
     }
 
     @Test
@@ -106,5 +106,4 @@ public abstract class AbstractStorageTest {
         storage.clear();
         assertEquals(0, storage.size());
     }
-
 }

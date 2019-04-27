@@ -1,21 +1,21 @@
 package ru.mail.avdienkoartyom.model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
     private String title;
+    private String site;
 
     private List<Period> periodList;
 
 
-    public Organization(String title, List<Period> periodList) {
+    public Organization(String title, List<Period> periodList, String site) {
         this.title = title;
         this.periodList = periodList;
+        this.site = site;
     }
 
     public List<Period> getPeriodList() {
@@ -33,9 +33,9 @@ public class Organization implements Serializable {
 
         for (Period p : periodList) {
             if (p.getStatus().isEmpty()) {
-                sb.append(p.getDateStart() + " " + p.getDateFinish() + "\n" + p.getDescription() + "\n");
+                sb.append(p.getDateStart() + " " + p.getDateFinish() + "\n" + p.getDescription() + "\n" + site + "\n");
             } else {
-                sb.append(p.getDateStart() + " " + p.getDateFinish() + "\n" + p.getStatus() + "\n" + p.getDescription() + "\n");
+                sb.append(p.getDateStart() + " " + p.getDateFinish() + "\n" + p.getStatus() + "\n" + p.getDescription() + "\n" + site + "\n");
             }
         }
         return sb.toString();
@@ -47,11 +47,12 @@ public class Organization implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
         return Objects.equals(title, that.title) &&
+                Objects.equals(site, that.site) &&
                 Objects.equals(periodList, that.periodList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, periodList);
+        return Objects.hash(title, site, periodList);
     }
 }
