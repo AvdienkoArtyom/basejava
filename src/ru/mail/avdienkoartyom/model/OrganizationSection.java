@@ -7,6 +7,9 @@ public class OrganizationSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
     private List<Organization> organizationList;
 
+    public OrganizationSection() {
+    }
+
     public OrganizationSection(List<Organization> organizationList) {
         this.organizationList = organizationList;
     }

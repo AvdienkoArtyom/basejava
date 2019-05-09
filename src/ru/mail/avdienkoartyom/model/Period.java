@@ -1,18 +1,30 @@
 package ru.mail.avdienkoartyom.model;
 
+
+import ru.mail.avdienkoartyom.util.LocalDateAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Period implements Serializable {
     private static final long serialVersionUID = 1L;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate dateStart;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate dateFinish;
     private String status;
     private String description;
 
+    public Period() {
+    }
+
     public Period(LocalDate dateStart, LocalDate dateFinish, String description) {
-        this(dateStart, dateFinish, "", description);
+        this(dateStart, dateFinish, "null", description);
     }
 
     public Period(LocalDate dateStart, LocalDate dateFinish, String status, String description) {

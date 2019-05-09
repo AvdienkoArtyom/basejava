@@ -7,8 +7,15 @@ public class ListSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
     private List<String> list;
 
+    public ListSection() {
+    }
+
     public ListSection(List<String> list) {
         this.list = list;
+    }
+
+    public List<String> getList() {
+        return list;
     }
 
     @Override

@@ -1,9 +1,12 @@
 package ru.mail.avdienkoartyom.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
     private String title;
@@ -11,11 +14,21 @@ public class Organization implements Serializable {
 
     private List<Period> periodList;
 
+    public Organization() {
+    }
 
     public Organization(String title, List<Period> periodList, String site) {
         this.title = title;
         this.periodList = periodList;
         this.site = site;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getSite() {
+        return site;
     }
 
     public List<Period> getPeriodList() {
@@ -32,7 +45,7 @@ public class Organization implements Serializable {
         sb.append(title + "\n");
 
         for (Period p : periodList) {
-            if (p.getStatus().isEmpty()) {
+            if (p.getStatus().equals("null")) {
                 sb.append(p.getDateStart() + " " + p.getDateFinish() + "\n" + p.getDescription() + "\n" + site + "\n");
             } else {
                 sb.append(p.getDateStart() + " " + p.getDateFinish() + "\n" + p.getStatus() + "\n" + p.getDescription() + "\n" + site + "\n");
