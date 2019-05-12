@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Period implements Serializable {
+public class Position implements Serializable {
     private static final long serialVersionUID = 1L;
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate dateStart;
@@ -20,14 +20,14 @@ public class Period implements Serializable {
     private String status;
     private String description;
 
-    public Period() {
+    public Position() {
     }
 
-    public Period(LocalDate dateStart, LocalDate dateFinish, String description) {
-        this(dateStart, dateFinish, "null", description);
+    public Position(LocalDate dateStart, LocalDate dateFinish, String description) {
+        this(dateStart, dateFinish, "", description);
     }
 
-    public Period(LocalDate dateStart, LocalDate dateFinish, String status, String description) {
+    public Position(LocalDate dateStart, LocalDate dateFinish, String status, String description) {
         this.dateStart = dateStart;
         this.dateFinish = dateFinish;
         this.status = status;
@@ -54,11 +54,11 @@ public class Period implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Period period = (Period) o;
-        return Objects.equals(dateStart, period.dateStart) &&
-                Objects.equals(dateFinish, period.dateFinish) &&
-                Objects.equals(status, period.status) &&
-                Objects.equals(description, period.description);
+        Position position = (Position) o;
+        return Objects.equals(dateStart, position.dateStart) &&
+                Objects.equals(dateFinish, position.dateFinish) &&
+                Objects.equals(status, position.status) &&
+                Objects.equals(description, position.description);
     }
 
     @Override

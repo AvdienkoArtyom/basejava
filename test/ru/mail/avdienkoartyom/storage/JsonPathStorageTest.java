@@ -1,7 +1,6 @@
 package ru.mail.avdienkoartyom.storage;
 
-import ru.mail.avdienkoartyom.storage.SorageStrategy.JsonStreamSerializer;
-import ru.mail.avdienkoartyom.storage.SorageStrategy.XmlStreamSerializer;
+import ru.mail.avdienkoartyom.storage.diskStrategy.JsonStreamSerializer;
 
 import java.nio.file.Paths;
 

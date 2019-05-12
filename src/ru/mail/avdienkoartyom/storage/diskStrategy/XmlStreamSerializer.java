@@ -1,4 +1,4 @@
-package ru.mail.avdienkoartyom.storage.SorageStrategy;
+package ru.mail.avdienkoartyom.storage.diskStrategy;
 
 import ru.mail.avdienkoartyom.model.*;
 import ru.mail.avdienkoartyom.util.XmlParser;
@@ -11,7 +11,7 @@ public class XmlStreamSerializer implements StorageStrategy{
 
     public XmlStreamSerializer() {
         this.xmlParser = new XmlParser(Resume.class, ContactType.class, ListSection.class, Organization.class, OrganizationSection.class,
-                Period.class, SectionType.class, SimpleTextSection.class);
+                Position.class, SectionType.class, SimpleTextSection.class);
     }
 
     public void doWrite(Resume resume, OutputStream outputStream) throws IOException {

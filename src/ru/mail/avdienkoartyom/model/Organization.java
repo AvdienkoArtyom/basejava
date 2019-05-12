@@ -10,33 +10,33 @@ import java.util.Objects;
 public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
     private String title;
-    private String site;
+    private String url;
 
-    private List<Period> periodList;
+    private List<Position> positionList;
 
     public Organization() {
     }
 
-    public Organization(String title, List<Period> periodList, String site) {
+    public Organization(String title, List<Position> positionList, String url) {
         this.title = title;
-        this.periodList = periodList;
-        this.site = site;
+        this.positionList = positionList;
+        this.url = url;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getSite() {
-        return site;
+    public String getUrl() {
+        return url;
     }
 
-    public List<Period> getPeriodList() {
-        return periodList;
+    public List<Position> getPositionList() {
+        return positionList;
     }
 
-    public void setPeriodList(List<Period> periodList) {
-        this.periodList = periodList;
+    public void setPositionList(List<Position> positionList) {
+        this.positionList = positionList;
     }
 
     @Override
@@ -44,11 +44,11 @@ public class Organization implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append(title + "\n");
 
-        for (Period p : periodList) {
-            if (p.getStatus().equals("null")) {
-                sb.append(p.getDateStart() + " " + p.getDateFinish() + "\n" + p.getDescription() + "\n" + site + "\n");
+        for (Position p : positionList) {
+            if (p.getStatus().isEmpty()) {
+                sb.append(p.getDateStart() + " " + p.getDateFinish() + "\n" + p.getDescription() + "\n" + url + "\n");
             } else {
-                sb.append(p.getDateStart() + " " + p.getDateFinish() + "\n" + p.getStatus() + "\n" + p.getDescription() + "\n" + site + "\n");
+                sb.append(p.getDateStart() + " " + p.getDateFinish() + "\n" + p.getStatus() + "\n" + p.getDescription() + "\n" + url + "\n");
             }
         }
         return sb.toString();
@@ -60,12 +60,12 @@ public class Organization implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
         return Objects.equals(title, that.title) &&
-                Objects.equals(site, that.site) &&
-                Objects.equals(periodList, that.periodList);
+                Objects.equals(url, that.url) &&
+                Objects.equals(positionList, that.positionList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, site, periodList);
+        return Objects.hash(title, url, positionList);
     }
 }

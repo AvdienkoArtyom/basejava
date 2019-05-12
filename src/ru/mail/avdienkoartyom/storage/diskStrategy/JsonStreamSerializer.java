@@ -1,4 +1,4 @@
-package ru.mail.avdienkoartyom.storage.SorageStrategy;
+package ru.mail.avdienkoartyom.storage.diskStrategy;
 
 import ru.mail.avdienkoartyom.model.Resume;
 import ru.mail.avdienkoartyom.util.JsonParser;

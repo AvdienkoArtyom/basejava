@@ -1,4 +1,4 @@
-package ru.mail.avdienkoartyom.storage.SorageStrategy;
+package ru.mail.avdienkoartyom.storage.diskStrategy;
 
 import ru.mail.avdienkoartyom.model.*;
 
@@ -25,7 +25,7 @@ public class DataStreamSerializer implements StorageStrategy {
             for (Map.Entry<SectionType, AbstractSection> entry : resume.getSection().entrySet()) {
                 SectionType sectionType = entry.getKey();
                 AbstractSection abstractSection = entry.getValue();
-                dataOutputStream.writeUTF(sectionType.getTitle());
+                dataOutputStream.writeUTF(sectionType.name());
                 switch (sectionType) {
                     case PERSONAL:
                     case OBJECTIVE:
@@ -55,29 +55,7 @@ public class DataStreamSerializer implements StorageStrategy {
             }
             int sectionCount = dataInputStream.readInt();
             for (int i = 0; i < sectionCount; i++) {
-
-                SectionType sectionType = null;
-                String stype = dataInputStream.readUTF();
-                switch (stype) {
-                    case "Личные качества":
-                        sectionType = SectionType.PERSONAL;
-                        break;
-                    case "Позиция":
-                        sectionType = SectionType.OBJECTIVE;
-                        break;
-                    case "Достижения":
-                        sectionType = SectionType.ACHIEVEMENT;
-                        break;
-                    case "Клалификация":
-                        sectionType = SectionType.QUALIFICATIONS;
-                        break;
-                    case "Опыт работы":
-                        sectionType = SectionType.EXPERIENCE;
-                        break;
-                    case "Образование":
-                        sectionType = SectionType.EDUCATION;
-                }
-
+                SectionType sectionType = SectionType.valueOf(dataInputStream.readUTF());
                 switch (sectionType) {
                     case PERSONAL:
                     case OBJECTIVE:
@@ -110,24 +88,26 @@ public class DataStreamSerializer implements StorageStrategy {
         dataOutputStream.writeInt(organizationSectionCount);
         for (Organization organization : organizationSection.getOrganizationList()) {
             dataOutputStream.writeUTF(organization.getTitle());
-            dataOutputStream.writeUTF(organization.getSite());
-            writePeriod(dataOutputStream, organization.getPeriodList());
+            dataOutputStream.writeUTF(organization.getUrl());
+            writePosition(dataOutputStream, organization.getPositionList());
         }
     }
 
-    private void writePeriod(DataOutputStream dataOutputStream, List<Period> periodList) throws IOException {
-        int periodListCount = periodList.size();
+    private void writePosition(DataOutputStream dataOutputStream, List<Position> positionList) throws IOException {
+        int periodListCount = positionList.size();
         dataOutputStream.writeInt(periodListCount);
-        for (Period period : periodList) {
-            dataOutputStream.writeInt(period.getDateStart().getYear());
-            dataOutputStream.writeInt(period.getDateStart().getMonthValue());
-            dataOutputStream.writeInt(period.getDateStart().getDayOfMonth());
-            dataOutputStream.writeInt(period.getDateFinish().getYear());
-            dataOutputStream.writeInt(period.getDateFinish().getMonthValue());
-            dataOutputStream.writeInt(period.getDateFinish().getDayOfMonth());
-            dataOutputStream.writeUTF(period.getStatus());
-            dataOutputStream.writeUTF(period.getDescription());
+        for (Position position : positionList) {
+            writeDatePosition(dataOutputStream, position.getDateStart());
+            writeDatePosition(dataOutputStream, position.getDateFinish());
+            dataOutputStream.writeUTF(position.getStatus());
+            dataOutputStream.writeUTF(position.getDescription());
         }
+    }
+
+    private void writeDatePosition(DataOutputStream dataOutputStream, LocalDate localDate) throws IOException {
+        dataOutputStream.writeInt(localDate.getYear());
+        dataOutputStream.writeInt(localDate.getMonthValue());
+        dataOutputStream.writeInt(localDate.getDayOfMonth());
     }
 
     private List<String> readListSection(DataInputStream dataInputStream) throws IOException {
@@ -145,26 +125,26 @@ public class DataStreamSerializer implements StorageStrategy {
         for (int i = 0; i < organizationSectionCount; i++) {
             String title = dataInputStream.readUTF();
             String site = dataInputStream.readUTF();
-            organizationList.add(new Organization(title, readPeriod(dataInputStream), site));
+            organizationList.add(new Organization(title, readPosition(dataInputStream), site));
         }
         return organizationList;
     }
 
-    private List<Period> readPeriod(DataInputStream dataInputStream) throws IOException {
-        List<Period> periodList = new ArrayList<>();
+    private List<Position> readPosition(DataInputStream dataInputStream) throws IOException {
+        List<Position> positionList = new ArrayList<>();
         int periodCount = dataInputStream.readInt();
         for (int i = 0; i < periodCount; i++) {
             LocalDate startDate = LocalDate.of(dataInputStream.readInt(), dataInputStream.readInt(), dataInputStream.readInt());
             LocalDate endDate = LocalDate.of(dataInputStream.readInt(), dataInputStream.readInt(), dataInputStream.readInt());
             String status = dataInputStream.readUTF();
             String description = dataInputStream.readUTF();
-            Period period;
-            if (status.equals("null")) {
-                period = new Period(startDate, endDate, status, description);
+            Position position;
+            if (status.isEmpty()) {
+                position = new Position(startDate, endDate, status, description);
             } else
-                period = new Period(startDate, endDate, status, description);
-            periodList.add(period);
+                position = new Position(startDate, endDate, status, description);
+            positionList.add(position);
         }
-        return periodList;
+        return positionList;
     }
 }

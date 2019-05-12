@@ -2,7 +2,7 @@ package ru.mail.avdienkoartyom.storage;
 
 import ru.mail.avdienkoartyom.exception.StorageException;
 import ru.mail.avdienkoartyom.model.Resume;
-import ru.mail.avdienkoartyom.storage.SorageStrategy.StorageStrategy;
+import ru.mail.avdienkoartyom.storage.diskStrategy.StorageStrategy;
 
 import java.io.*;
 import java.nio.file.Files;

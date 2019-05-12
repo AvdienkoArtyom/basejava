@@ -1,6 +1,6 @@
 package ru.mail.avdienkoartyom.storage;
 
-import ru.mail.avdienkoartyom.storage.SorageStrategy.DataStreamSerializer;
+import ru.mail.avdienkoartyom.storage.diskStrategy.DataStreamSerializer;
 
 import java.nio.file.Paths;
 

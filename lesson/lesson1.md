@@ -101,7 +101,7 @@ r1, r2, r3,..., rn, null, null,..., null
  
  > Что такое `null`?
 
-[Что такое null в Java?](http://qaru.site/questions/1960/what-is-null-in-java) (оригинал: [What is null in Java?
+[Что такое null в Java?](http://qaru.url/questions/1960/what-is-null-in-java) (оригинал: [What is null in Java?
 ](https://stackoverflow.com/questions/2707322/what-is-null-in-java))
 
 ### Замечания по выполнению HW1
