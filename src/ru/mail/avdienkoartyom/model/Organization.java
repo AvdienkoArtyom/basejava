@@ -17,7 +17,11 @@ public class Organization implements Serializable {
     public Organization() {
     }
 
-    public Organization(String title, List<Position> positionList, String url) {
+    public Organization(String title, List<Position> positionList) {
+      this(title, "", positionList);
+    }
+
+    public Organization(String title, String url, List<Position> positionList) {
         this.title = title;
         this.positionList = positionList;
         this.url = url;

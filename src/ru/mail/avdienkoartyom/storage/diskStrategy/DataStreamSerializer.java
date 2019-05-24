@@ -5,8 +5,8 @@ import ru.mail.avdienkoartyom.model.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 public class DataStreamSerializer implements StorageStrategy {
     @Override
@@ -14,18 +14,17 @@ public class DataStreamSerializer implements StorageStrategy {
         try (DataOutputStream dataOutputStream = new DataOutputStream(outputStream)) {
             dataOutputStream.writeUTF(resume.getUuid());
             dataOutputStream.writeUTF(resume.getFullName());
-            int contactCount = resume.getContact().size();
-            dataOutputStream.writeInt(contactCount);
-            for (Map.Entry<ContactType, String> entry : resume.getContact().entrySet()) {
-                dataOutputStream.writeUTF(entry.getKey().toString());
+
+            writeCollection(dataOutputStream, resume.getContact().entrySet(), entry -> {
+                dataOutputStream.writeUTF(entry.getKey().name());
                 dataOutputStream.writeUTF(entry.getValue());
-            }
-            int sectionCount = resume.getSection().size();
-            dataOutputStream.writeInt(sectionCount);
-            for (Map.Entry<SectionType, AbstractSection> entry : resume.getSection().entrySet()) {
+            });
+
+            writeCollection(dataOutputStream, resume.getSection().entrySet(), entry -> {
                 SectionType sectionType = entry.getKey();
                 AbstractSection abstractSection = entry.getValue();
                 dataOutputStream.writeUTF(sectionType.name());
+
                 switch (sectionType) {
                     case PERSONAL:
                     case OBJECTIVE:
@@ -33,14 +32,23 @@ public class DataStreamSerializer implements StorageStrategy {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        writeListSection(dataOutputStream, (ListSection) abstractSection);
+                        writeCollection(dataOutputStream, ((ListSection) abstractSection).getList(), dataOutputStream::writeUTF);
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-                        writeOrganization(dataOutputStream, (OrganizationSection) abstractSection);
+                        writeCollection(dataOutputStream, ((OrganizationSection) abstractSection).getOrganizationList(), org -> {
+                            dataOutputStream.writeUTF(org.getTitle());
+                            dataOutputStream.writeUTF(org.getUrl());
+                            writeCollection(dataOutputStream, org.getPositionList(), position -> {
+                                writeDatePosition(dataOutputStream, position.getDateStart());
+                                writeDatePosition(dataOutputStream, position.getDateFinish());
+                                dataOutputStream.writeUTF(position.getStatus());
+                                dataOutputStream.writeUTF(position.getDescription());
+                            });
+                        });
                         break;
                 }
-            }
+            });
         }
     }
 
@@ -49,12 +57,10 @@ public class DataStreamSerializer implements StorageStrategy {
         Resume resume;
         try (DataInputStream dataInputStream = new DataInputStream(inputStream)) {
             resume = new Resume(dataInputStream.readUTF(), dataInputStream.readUTF());
-            int contactCount = dataInputStream.readInt();
-            for (int i = 0; i < contactCount; i++) {
-                resume.getContact().put(ContactType.valueOf(dataInputStream.readUTF()), dataInputStream.readUTF());
-            }
-            int sectionCount = dataInputStream.readInt();
-            for (int i = 0; i < sectionCount; i++) {
+
+            readCollection(dataInputStream, () -> resume.getContact().put(ContactType.valueOf(dataInputStream.readUTF()), dataInputStream.readUTF()));
+
+            readCollection(dataInputStream, () -> {
                 SectionType sectionType = SectionType.valueOf(dataInputStream.readUTF());
                 switch (sectionType) {
                     case PERSONAL:
@@ -63,44 +69,52 @@ public class DataStreamSerializer implements StorageStrategy {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        resume.getSection().put(sectionType, new ListSection(readListSection(dataInputStream)));
+                        resume.getSection().put(sectionType, new ListSection(readList(dataInputStream, dataInputStream::readUTF)));
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-                        resume.getSection().put(sectionType, new OrganizationSection(readOrganization(dataInputStream)));
+                        resume.getSection().put(sectionType, new OrganizationSection(readList(dataInputStream, () ->
+                                new Organization(dataInputStream.readUTF(), dataInputStream.readUTF(), readList(dataInputStream, () ->
+                                        new Position(readDatePosition(dataInputStream), readDatePosition(dataInputStream), dataInputStream.readUTF(), dataInputStream.readUTF()))))));
                         break;
                 }
-            }
+            });
         }
         return resume;
     }
 
-    private void writeListSection(DataOutputStream dataOutputStream, ListSection listSection) throws IOException {
-        int listSectionCount = listSection.getList().size();
-        dataOutputStream.writeInt(listSectionCount);
-        for (String s : listSection.getList()) {
-            dataOutputStream.writeUTF(s);
+    private interface ElementReader<T> {
+        T read() throws IOException;
+    }
+
+    private <T> List<T> readList(DataInputStream dis, ElementReader<T> reader) throws IOException {
+        int size = dis.readInt();
+        List<T> list = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            list.add(reader.read());
+        }
+        return list;
+    }
+
+    private interface ElementProcessor {
+        void process() throws IOException;
+    }
+
+    private interface MyWriter<T> {
+        void write(T t) throws IOException;
+    }
+
+    private <T> void writeCollection(DataOutputStream dos, Collection<T> collection, MyWriter<T> myWriter) throws IOException {
+        dos.writeInt(collection.size());
+        for (T item : collection) {
+            myWriter.write(item);
         }
     }
 
-    private void writeOrganization(DataOutputStream dataOutputStream, OrganizationSection organizationSection) throws IOException {
-        int organizationSectionCount = organizationSection.getOrganizationList().size();
-        dataOutputStream.writeInt(organizationSectionCount);
-        for (Organization organization : organizationSection.getOrganizationList()) {
-            dataOutputStream.writeUTF(organization.getTitle());
-            dataOutputStream.writeUTF(organization.getUrl());
-            writePosition(dataOutputStream, organization.getPositionList());
-        }
-    }
-
-    private void writePosition(DataOutputStream dataOutputStream, List<Position> positionList) throws IOException {
-        int periodListCount = positionList.size();
-        dataOutputStream.writeInt(periodListCount);
-        for (Position position : positionList) {
-            writeDatePosition(dataOutputStream, position.getDateStart());
-            writeDatePosition(dataOutputStream, position.getDateFinish());
-            dataOutputStream.writeUTF(position.getStatus());
-            dataOutputStream.writeUTF(position.getDescription());
+    private void readCollection(DataInputStream dis, ElementProcessor processor) throws IOException {
+        int size = dis.readInt();
+        for (int i = 0; i < size; i++) {
+            processor.process();
         }
     }
 
@@ -110,41 +124,7 @@ public class DataStreamSerializer implements StorageStrategy {
         dataOutputStream.writeInt(localDate.getDayOfMonth());
     }
 
-    private List<String> readListSection(DataInputStream dataInputStream) throws IOException {
-        List<String> stringList = new ArrayList<>();
-        int listSectionCount = dataInputStream.readInt();
-        for (int i = 0; i < listSectionCount; i++) {
-            stringList.add(dataInputStream.readUTF());
-        }
-        return stringList;
-    }
-
-    private List<Organization> readOrganization(DataInputStream dataInputStream) throws IOException {
-        List<Organization> organizationList = new ArrayList<>();
-        int organizationSectionCount = dataInputStream.readInt();
-        for (int i = 0; i < organizationSectionCount; i++) {
-            String title = dataInputStream.readUTF();
-            String site = dataInputStream.readUTF();
-            organizationList.add(new Organization(title, readPosition(dataInputStream), site));
-        }
-        return organizationList;
-    }
-
-    private List<Position> readPosition(DataInputStream dataInputStream) throws IOException {
-        List<Position> positionList = new ArrayList<>();
-        int periodCount = dataInputStream.readInt();
-        for (int i = 0; i < periodCount; i++) {
-            LocalDate startDate = LocalDate.of(dataInputStream.readInt(), dataInputStream.readInt(), dataInputStream.readInt());
-            LocalDate endDate = LocalDate.of(dataInputStream.readInt(), dataInputStream.readInt(), dataInputStream.readInt());
-            String status = dataInputStream.readUTF();
-            String description = dataInputStream.readUTF();
-            Position position;
-            if (status.isEmpty()) {
-                position = new Position(startDate, endDate, status, description);
-            } else
-                position = new Position(startDate, endDate, status, description);
-            positionList.add(position);
-        }
-        return positionList;
+    private LocalDate readDatePosition(DataInputStream dataInputStream) throws IOException {
+        return LocalDate.of(dataInputStream.readInt(), dataInputStream.readInt(), dataInputStream.readInt());
     }
 }
