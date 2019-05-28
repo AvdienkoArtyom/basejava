@@ -31,7 +31,7 @@ public class Position implements Serializable {
         this.dateStart = dateStart;
         this.dateFinish = dateFinish;
         this.status = status;
-        this.description = description;
+        this.description = description == null ? "" : description;
     }
 
     public LocalDate getDateStart() {

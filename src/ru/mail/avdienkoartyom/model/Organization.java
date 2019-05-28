@@ -23,8 +23,9 @@ public class Organization implements Serializable {
 
     public Organization(String title, String url, List<Position> positionList) {
         this.title = title;
+        this.url = url == null ? "" : url;
         this.positionList = positionList;
-        this.url = url;
+
     }
 
     public String getTitle() {
