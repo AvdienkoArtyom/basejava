@@ -19,22 +19,12 @@ public class MainStream {
     }
 
     private static int minValue(int[] values) {
-        List<Integer> list = Arrays.stream(values).boxed().distinct().sorted().collect(Collectors.toList());
-        int count = 0;
-        for (int i = 0, j = list.size() - 1; i < list.size(); i++, j--) {
-            count = count + (list.get(i) * (int) Math.pow(10, j));
-        }
-        return count;
+        OptionalInt optionalInt = Arrays.stream(values).distinct().sorted().reduce((left, right) -> Integer.parseInt(String.valueOf(left) + right));
+        return optionalInt.getAsInt();
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
         long optionalInt = integers.stream().mapToInt((s) -> s).sum();
-        List<Integer> list;
-        if (optionalInt % 2 == 0) {
-            list = integers.stream().filter(i -> (i % 2 == 0)).collect(Collectors.toList());
-        } else {
-            list = integers.stream().filter(i -> (i % 2 != 0)).collect(Collectors.toList());
-        }
-        return list;
+        return integers.stream().filter(i -> (optionalInt % 2 == 0) == (i % 2 == 0)).collect(Collectors.toList());
     }
 }
