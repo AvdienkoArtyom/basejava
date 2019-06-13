@@ -1,9 +1,16 @@
 package ru.mail.avdienkoartyom.exception;
 
-import java.io.IOException;
 
 public class StorageException extends RuntimeException {
     private final String uuid;
+
+    public StorageException(Exception e) {
+        this(e.getMessage(), e);
+    }
+
+    private StorageException(String message, Exception e){
+        this(message, null, e);
+    }
 
     public StorageException(String message, String uuid) {
         super(message);

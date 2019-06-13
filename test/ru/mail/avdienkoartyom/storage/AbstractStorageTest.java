@@ -2,6 +2,7 @@ package ru.mail.avdienkoartyom.storage;
 
 import org.junit.Before;
 import org.junit.Test;
+import ru.mail.avdienkoartyom.Config;
 import ru.mail.avdienkoartyom.TestDataResume;
 import ru.mail.avdienkoartyom.exception.ExistStorageException;
 import ru.mail.avdienkoartyom.exception.NoExistStorageException;
@@ -11,18 +12,19 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
 
 public abstract class AbstractStorageTest {
-    protected static final File STORAGE_DIR = new File("C:\\Users\\Artem\\basejava\\Storage");
+    protected static final File STORAGE_DIR = Config.getInstance().getStorageDir();
     protected Storage storage;
-    private static final String UUID_1 = "UUID_1";
-    private static final String UUID_2 = "UUID_2";
-    private static final String UUID_3 = "UUID_3";
-    private static final String UUID_4 = "UUID_4";
-    private static final String UUID_5 = "UUID_5";
+    private static final String UUID_1 = UUID.randomUUID().toString();
+    private static final String UUID_2 = UUID.randomUUID().toString();
+    private static final String UUID_3 = UUID.randomUUID().toString();
+    private static final String UUID_4 = UUID.randomUUID().toString();
+    private static final String UUID_5 = UUID.randomUUID().toString();
     private Resume RESUME_1 = TestDataResume.createResumeUUID(UUID_1, "Петр_1");
     private Resume RESUME_2 = TestDataResume.createResumeUUID(UUID_2, "Петр_2");
     private Resume RESUME_3 = TestDataResume.createResumeUUID(UUID_3, "Петр_3");

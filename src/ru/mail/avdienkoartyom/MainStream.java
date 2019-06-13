@@ -11,10 +11,10 @@ public class MainStream {
         List<Integer> list2 = Arrays.asList(1, 2, 3, 8, 5, 8, 2, 2, 4, 5);
         System.out.println("Выбираем уникальные числа и возвращаем минимально возможное число, составленное из этих уникальных цифр");
         System.out.println(minValue(ints));
-        System.out.println("Удаляем все четные");
+        System.out.println("Удаляем все нечетные");
         oddOrEven(list1).stream().forEach(System.out::print);
         System.out.println();
-        System.out.println("Удаляем все нечетные");
+        System.out.println("Удаляем все четные");
         oddOrEven(list2).stream().forEach(System.out::print);
     }
 
@@ -25,6 +25,6 @@ public class MainStream {
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
         long optionalInt = integers.stream().mapToInt((s) -> s).sum();
-        return integers.stream().filter(i -> (optionalInt % 2 == i % 2)).collect(Collectors.toList());
+        return integers.stream().filter(i -> (optionalInt % 2 != i % 2)).collect(Collectors.toList());
     }
 }
