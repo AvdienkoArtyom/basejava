@@ -11,7 +11,7 @@ import java.util.*;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Resume implements Comparable<Resume>, Serializable {
+public class Resume implements Serializable {
     private static final long serialVersionUID = 1L;
     private String uuid;
     private String fullName;
@@ -70,10 +70,15 @@ public class Resume implements Comparable<Resume>, Serializable {
         return Objects.hash(uuid, fullName, contact, section);
     }
 
-    @Override
-    public int compareTo(Resume o) {
-        int cmp = fullName.compareTo(o.getFullName());
-        return cmp != 0 ? cmp : uuid.compareTo(o.getUuid());
+//    @Override
+//    public int compareTo(Resume o) {
+//        int cmp = fullName.compareTo(o.getFullName());
+//        return cmp != 0 ? cmp : uuid.compareTo(o.getUuid());
+//    }
+
+    public static Comparator resumeComparator(){
+        return Comparator.comparing(Resume::getFullName)
+                .thenComparing(Resume::getUuid);
     }
 
     @Override
