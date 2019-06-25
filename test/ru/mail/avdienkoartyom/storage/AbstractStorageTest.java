@@ -10,11 +10,11 @@ import ru.mail.avdienkoartyom.model.*;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
+import static ru.mail.avdienkoartyom.storage.AbstractStorage.resumeComparator;
 
 
 public abstract class AbstractStorageTest {
@@ -70,15 +70,22 @@ public abstract class AbstractStorageTest {
         List<Resume> resumeListTest = storage.getAllSorted();
         assertEquals(3, resumeListTest.size());
         List<Resume> resumeList = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
-        Collections.sort(resumeList, Resume.resumeComparator());
+        resumeList.sort(resumeComparator());
         assertEquals(resumeList, resumeListTest);
     }
 
     @Test
     public void update() {
-        Resume newResume = new Resume(UUID_1, "newName");
-        storage.update(newResume);
-        assertEquals(newResume, storage.get(UUID_1));
+        RESUME_1.setFullName("newName");
+        RESUME_1.getContact().put(ContactType.TELEPHONE, "Tel New" + RESUME_1.getUuid());
+        RESUME_1.getContact().put(ContactType.EMAIL, "Mail New" + RESUME_1.getUuid());
+        RESUME_1.getContact().put(ContactType.SKYPE, "Skype New" + RESUME_1.getUuid());
+        RESUME_1.getContact().put(ContactType.PROFILE_LINKEDIN, "LinkedIn New" + RESUME_1.getUuid());
+        RESUME_1.getContact().put(ContactType.PROFILE_GITHUB, "GitHub New" + RESUME_1.getUuid());
+        RESUME_1.getContact().put(ContactType.PROFILE_STACKOVERFLOW, "StackOverflow New" + RESUME_1.getUuid());
+        RESUME_1.getContact().put(ContactType.HOMEPAGE, "Home page New" + RESUME_1.getUuid());
+        storage.update(RESUME_1);
+        assertEquals(RESUME_1, storage.get(UUID_1));
     }
 
     @Test(expected = NoExistStorageException.class)

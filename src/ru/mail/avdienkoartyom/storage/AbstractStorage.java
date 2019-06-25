@@ -4,7 +4,7 @@ import ru.mail.avdienkoartyom.exception.ExistStorageException;
 import ru.mail.avdienkoartyom.exception.NoExistStorageException;
 import ru.mail.avdienkoartyom.model.Resume;
 
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public abstract class AbstractStorage<T> implements Storage {
@@ -23,6 +23,11 @@ public abstract class AbstractStorage<T> implements Storage {
 
     protected abstract boolean isExist(T uuid);
 
+    public static Comparator resumeComparator(){
+        return Comparator.comparing(Resume::getFullName)
+                .thenComparing(Resume::getUuid);
+    }
+
     public void save(Resume resume) {
         T searchKey = getNotExistedSearchKey(resume.getUuid());
         doSave(resume, searchKey);
@@ -35,7 +40,7 @@ public abstract class AbstractStorage<T> implements Storage {
 
     public List<Resume> getAllSorted(){
         List<Resume> list = doGetAll();
-        Collections.sort(list, Resume.resumeComparator());
+        list.sort(resumeComparator());
         return list;
     }
 

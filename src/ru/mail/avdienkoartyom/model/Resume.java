@@ -54,6 +54,10 @@ public class Resume implements Serializable {
         return fullName;
     }
 
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,17 +72,6 @@ public class Resume implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(uuid, fullName, contact, section);
-    }
-
-//    @Override
-//    public int compareTo(Resume o) {
-//        int cmp = fullName.compareTo(o.getFullName());
-//        return cmp != 0 ? cmp : uuid.compareTo(o.getUuid());
-//    }
-
-    public static Comparator resumeComparator(){
-        return Comparator.comparing(Resume::getFullName)
-                .thenComparing(Resume::getUuid);
     }
 
     @Override

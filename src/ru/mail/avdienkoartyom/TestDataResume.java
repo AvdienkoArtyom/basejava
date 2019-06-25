@@ -11,13 +11,13 @@ public class TestDataResume {
 
     public static Resume createResumeUUID(String uuid, String name) {
         Resume resume = new Resume(uuid, name);
-//        resume.getContact().put(ContactType.TELEPHONE, "Tel " + uuid);
-//        resume.getContact().put(ContactType.EMAIL, "Mail " + uuid);
-//        resume.getContact().put(ContactType.SKYPE, "Skype " + uuid);
-//        resume.getContact().put(ContactType.PROFILE_LINKEDIN, "LinkedIn " + uuid);
-//        resume.getContact().put(ContactType.PROFILE_GITHUB, "GitHub " + uuid);
-//        resume.getContact().put(ContactType.PROFILE_STACKOVERFLOW, "StackOverflow " + uuid);
-//        resume.getContact().put(ContactType.HOMEPAGE, "Home page " + uuid);
+        resume.getContact().put(ContactType.TELEPHONE, "Tel " + uuid);
+        resume.getContact().put(ContactType.EMAIL, "Mail " + uuid);
+        resume.getContact().put(ContactType.SKYPE, "Skype " + uuid);
+        resume.getContact().put(ContactType.PROFILE_LINKEDIN, "LinkedIn " + uuid);
+        resume.getContact().put(ContactType.PROFILE_GITHUB, "GitHub " + uuid);
+        resume.getContact().put(ContactType.PROFILE_STACKOVERFLOW, "StackOverflow " + uuid);
+        resume.getContact().put(ContactType.HOMEPAGE, "Home page " + uuid);
 //
 //        resume.getSection().put(SectionType.PERSONAL, new SimpleTextSection("Simple text section personal " + uuid));
 //        resume.getSection().put(SectionType.OBJECTIVE, new SimpleTextSection("Simple text section objective " + uuid));
