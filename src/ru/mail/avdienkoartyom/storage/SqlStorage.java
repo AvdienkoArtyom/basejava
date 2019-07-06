@@ -1,19 +1,18 @@
 package ru.mail.avdienkoartyom.storage;
 
+
 import ru.mail.avdienkoartyom.exception.NoExistStorageException;
-import ru.mail.avdienkoartyom.exception.StorageException;
 import ru.mail.avdienkoartyom.model.ContactType;
 import ru.mail.avdienkoartyom.model.Resume;
-import ru.mail.avdienkoartyom.model.SectionType;
-import ru.mail.avdienkoartyom.sql.ConnectionFactory;
 import ru.mail.avdienkoartyom.sql.SqlHelper;
-import ru.mail.avdienkoartyom.storage.Storage;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static ru.mail.avdienkoartyom.storage.AbstractStorage.resumeComparator;
 
 public class SqlStorage implements Storage {
 
@@ -43,32 +42,16 @@ public class SqlStorage implements Storage {
             return null;
         });
 
-
     }
 
     @Override
     public void update(Resume resume) {
-
-        sqlHelper.transactionExecute(connection -> {
-            try (PreparedStatement ps = connection.prepareStatement("UPDATE resume SET full_name = ? WHERE uuid = ?")) {
-                ps.setString(1, resume.getFullName());
-                ps.setString(2, resume.getUuid());
-                if (ps.executeUpdate() == 0) {
-                    throw new NoExistStorageException(resume.getUuid());
-                }
-            }
-
-            try (PreparedStatement ps = connection.prepareStatement("UPDATE contact SET  value = ? WHERE type = ? AND resume_uuid = ?")) {
-                for (Map.Entry<ContactType, String> map : resume.getContact().entrySet()) {
-                    ps.setString(1, map.getValue());
-                    ps.setString(2, map.getKey().name());
-                    ps.setString(3, resume.getUuid());
-                    ps.addBatch();
-                }
-                ps.executeBatch();
-            }
-            return null;
-        });
+        if (get(resume.getUuid()) == null) {
+            throw new NoExistStorageException(resume.getUuid());
+        } else {
+            delete(resume.getUuid());
+            save(resume);
+        }
     }
 
     @Override
@@ -88,8 +71,10 @@ public class SqlStorage implements Storage {
                     Resume resume = new Resume(uuid, rs.getString("full_name"));
                     do {
                         String ct = rs.getString("type");
-                        String value = rs.getString("value");
-                        resume.getContact().put(ContactType.valueOf(ct), value);
+                        if (ct != null) {
+                            String value = rs.getString("value");
+                            resume.getContact().put(ContactType.valueOf(ct), value);
+                        }
                     } while (rs.next());
                     return resume;
                 });
@@ -97,23 +82,27 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        return sqlHelper.execute("SELECT * FROM resume r ORDER BY  full_name, uuid", ps -> {
+        return sqlHelper.execute("SELECT * FROM resume r LEFT OUTER JOIN contact ON (uuid = resume_uuid);", ps -> {
             ResultSet resultSet = ps.executeQuery();
-            List<Resume> resumeList = new ArrayList<>();
+
+            Map<String, Resume> resumeMap = new HashMap<>();
             while (resultSet.next()) {
-                Resume resume = new Resume(resultSet.getString("uuid"), resultSet.getString("full_name"));
-
-                sqlHelper.execute("SELECT * FROM contact c WHERE resume_uuid = ?", ps1 -> {
-                    ps1.setString(1, resume.getUuid());
-                    ResultSet resultSetContact = ps1.executeQuery();
-                    while (resultSetContact.next()) {
-                        resume.getContact().put(ContactType.valueOf(resultSetContact.getString("type")), resultSetContact.getString("value"));
-                    }
-                    return null;
-                });
-
-                resumeList.add(resume);
+                String uuid = resultSet.getString("uuid");
+                Resume resume;
+                if (resumeMap.containsKey(uuid)) {
+                    resume = resumeMap.get(uuid);
+                } else {
+                    resume = new Resume(resultSet.getString("uuid"), resultSet.getString("full_name"));
+                }
+                String ct = resultSet.getString("type");
+                if (ct != null) {
+                    String value = resultSet.getString("value");
+                    resume.getContact().put(ContactType.valueOf(ct), value);
+                }
+                resumeMap.put(uuid, resume);
             }
+            List<Resume> resumeList = new ArrayList<>(resumeMap.values());
+            resumeList.sort(resumeComparator());
             return resumeList;
         });
     }

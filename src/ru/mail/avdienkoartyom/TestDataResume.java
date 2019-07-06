@@ -45,6 +45,17 @@ public class TestDataResume {
         return resume;
     }
 
+    public static Resume createResumeUUIDWithoutContact(String uuid, String name) {
+        Resume resume = new Resume(uuid, name);
+        return resume;
+    }
+
+    public static Resume createResumeUUIDWithOneContact(String uuid, String name) {
+        Resume resume = new Resume(uuid, name);
+        resume.getContact().put(ContactType.HOMEPAGE, "Home page " + uuid);
+        return resume;
+    }
+
     public static void main(String[] args) {
 
         Resume resume = TestDataResume.createResumeUUID("UUID_1", "Петр_1");
