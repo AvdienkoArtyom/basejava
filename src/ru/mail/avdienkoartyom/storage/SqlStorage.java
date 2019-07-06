@@ -7,12 +7,7 @@ import ru.mail.avdienkoartyom.model.Resume;
 import ru.mail.avdienkoartyom.sql.SqlHelper;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static ru.mail.avdienkoartyom.storage.AbstractStorage.resumeComparator;
+import java.util.*;
 
 public class SqlStorage implements Storage {
 
@@ -82,10 +77,10 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        return sqlHelper.execute("SELECT * FROM resume r LEFT OUTER JOIN contact ON (uuid = resume_uuid);", ps -> {
+        return sqlHelper.execute("SELECT * FROM resume r LEFT OUTER JOIN contact ON (uuid = resume_uuid) ORDER BY full_name, uuid;", ps -> {
             ResultSet resultSet = ps.executeQuery();
 
-            Map<String, Resume> resumeMap = new HashMap<>();
+            Map<String, Resume> resumeMap = new LinkedHashMap<>();
             while (resultSet.next()) {
                 String uuid = resultSet.getString("uuid");
                 Resume resume;
@@ -101,9 +96,7 @@ public class SqlStorage implements Storage {
                 }
                 resumeMap.put(uuid, resume);
             }
-            List<Resume> resumeList = new ArrayList<>(resumeMap.values());
-            resumeList.sort(resumeComparator());
-            return resumeList;
+            return new ArrayList<>(resumeMap.values());
         });
     }
 
