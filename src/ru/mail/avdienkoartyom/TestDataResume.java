@@ -18,20 +18,20 @@ public class TestDataResume {
         resume.getContact().put(ContactType.PROFILE_GITHUB, "GitHub " + uuid);
         resume.getContact().put(ContactType.PROFILE_STACKOVERFLOW, "StackOverflow " + uuid);
         resume.getContact().put(ContactType.HOMEPAGE, "Home page " + uuid);
-//
-//        resume.getSection().put(SectionType.PERSONAL, new SimpleTextSection("Simple text section personal " + uuid));
-//        resume.getSection().put(SectionType.OBJECTIVE, new SimpleTextSection("Simple text section objective " + uuid));
-//
-//        ArrayList<String> achievementList = new ArrayList<>();
-//        achievementList.add("Achievement 1 " + uuid);
-//        achievementList.add("Achievement 2 " + uuid);
-//        resume.getSection().put(SectionType.ACHIEVEMENT, new ListSection(achievementList));
-//
-//        ArrayList<String> qualificationList = new ArrayList<>();
-//        qualificationList.add("Qualification 1 " + uuid);
-//        qualificationList.add("Qualification 2 " + uuid);
-//        resume.getSection().put(SectionType.QUALIFICATIONS, new ListSection(qualificationList));
-//
+
+        resume.getSection().put(SectionType.PERSONAL, new SimpleTextSection("Simple text section personal " + uuid));
+        resume.getSection().put(SectionType.OBJECTIVE, new SimpleTextSection("Simple text section objective " + uuid));
+
+        ArrayList<String> achievementList = new ArrayList<>();
+        achievementList.add("Achievement 1 AAAAAAAAAAAAAAA " + uuid);
+        achievementList.add("Achievement 2 BAAAAAAAAAAAAAAB" + uuid);
+        resume.getSection().put(SectionType.ACHIEVEMENT, new ListSection(achievementList));
+
+        ArrayList<String> qualificationList = new ArrayList<>();
+        qualificationList.add("Qualification 1 AQQQQQQQQQQQQQQQQQQQQQQA" + uuid);
+        qualificationList.add("Qualification 2 BQQQQQQQQQQQQQQQQQQQQQQB" + uuid);
+        resume.getSection().put(SectionType.QUALIFICATIONS, new ListSection(qualificationList));
+
 //        List<Organization> experienceList = new ArrayList<>();
 //        experienceList.add(new Organization("Experience 1 " + uuid,"сайт", Arrays.asList(new Position(DateUtil.of(2013, Month.OCTOBER), LocalDate.now(), "Status experience 1 " + uuid, "Description experience 1 " + uuid))));
 //        experienceList.add(new Organization("Experience 2 " + uuid,"сайт", Arrays.asList(new Position(DateUtil.of(2014, Month.OCTOBER), DateUtil.of(2016, Month.JANUARY), "Status experience 2 " + uuid, "Description experience 2 " + uuid))));
@@ -47,12 +47,18 @@ public class TestDataResume {
 
     public static Resume createResumeUUIDWithoutContact(String uuid, String name) {
         Resume resume = new Resume(uuid, name);
+        resume.getSection().put(SectionType.PERSONAL, new SimpleTextSection("Simple text section personal " + uuid));
+        resume.getSection().put(SectionType.OBJECTIVE, new SimpleTextSection("Simple text section objective " + uuid));
+
         return resume;
     }
 
     public static Resume createResumeUUIDWithOneContact(String uuid, String name) {
         Resume resume = new Resume(uuid, name);
         resume.getContact().put(ContactType.HOMEPAGE, "Home page " + uuid);
+        resume.getSection().put(SectionType.PERSONAL, new SimpleTextSection("Simple text section personal " + uuid));
+        resume.getSection().put(SectionType.OBJECTIVE, new SimpleTextSection("Simple text section objective " + uuid));
+
         return resume;
     }
 
