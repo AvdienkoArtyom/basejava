@@ -2,7 +2,6 @@ package ru.mail.avdienkoartyom.model;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class ListSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
@@ -21,7 +20,7 @@ public class ListSection extends AbstractSection {
 
     @Override
     public String toString() {
-        return list.stream().collect(Collectors.joining("\n"));
+        return  String.join("\n", list);
     }
 
     @Override
