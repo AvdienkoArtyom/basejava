@@ -18,11 +18,20 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
     private List<Resume> resumeList;
 
     @Override
+    public void init() throws ServletException {
+        storage = new SortedArrayStorage();
+        storage.save(TestDataResume.createResumeUUID(UUID.randomUUID().toString(), "Петр_1"));
+        storage.save(TestDataResume.createResumeUUIDWithOneContact(UUID.randomUUID().toString(), "Петр_2"));
+        storage.save(TestDataResume.createResumeUUIDWithoutContact(UUID.randomUUID().toString(), "Петр_3"));
+    }
+
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
 
+        resumeList = storage.getAllSorted();
         StringBuilder stringResponse = new StringBuilder("<table align=\"center\" width=80% border=2>");
         for (Resume resume : resumeList) {
             stringResponse.append("<tr>");
@@ -38,14 +47,5 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doPost(req, resp);
-    }
-
-    @Override
-    public void init() throws ServletException {
-        storage = new SortedArrayStorage();
-        storage.save(TestDataResume.createResumeUUID(UUID.randomUUID().toString(), "Петр_1"));
-        storage.save(TestDataResume.createResumeUUIDWithOneContact(UUID.randomUUID().toString(), "Петр_2"));
-        storage.save(TestDataResume.createResumeUUIDWithoutContact(UUID.randomUUID().toString(), "Петр_3"));
-        resumeList = storage.getAllSorted();
     }
 }

@@ -167,8 +167,8 @@ public class SqlStorage implements Storage {
 
     private void insertContact(Connection connection, Resume resume) throws SQLException {
         try (PreparedStatement ps = connection.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)")) {
+            ps.setString(1, resume.getUuid());
             for (Map.Entry<ContactType, String> e : resume.getContact().entrySet()) {
-                ps.setString(1, resume.getUuid());
                 ps.setString(2, e.getKey().name());
                 ps.setString(3, e.getValue());
                 ps.addBatch();
