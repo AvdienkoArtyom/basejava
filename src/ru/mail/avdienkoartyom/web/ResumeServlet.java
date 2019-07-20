@@ -31,9 +31,8 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
 
-        resumeList = storage.getAllSorted();
         StringBuilder stringResponse = new StringBuilder("<table align=\"center\" width=80% border=2>");
-        for (Resume resume : resumeList) {
+        for (Resume resume : storage.getAllSorted()) {
             stringResponse.append("<tr>");
             stringResponse.append("<td> Полное имя:" + resume.getFullName() + "</td>");
             stringResponse.append("<td> UUID:" + resume.getUuid() + "</td>");

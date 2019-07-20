@@ -43,7 +43,6 @@ public class SqlStorage implements Storage {
             try (PreparedStatement ps = connection.prepareStatement("DELETE FROM contact WHERE contact.resume_uuid = ?")) {
                 ps.setString(1, resume.getUuid());
                 ps.executeUpdate();
-
             }
             try (PreparedStatement ps = connection.prepareStatement("DELETE FROM section WHERE section.resume_uuid = ?")) {
                 ps.setString(1, resume.getUuid());
@@ -68,11 +67,7 @@ public class SqlStorage implements Storage {
                 }
                 resume = new Resume(uuid, rs.getString("full_name"));
                 do {
-                    String ct = rs.getString("type");
-                    if (ct != null) {
-                        String value = rs.getString("value");
-                        resume.getContact().put(ContactType.valueOf(ct), value);
-                    }
+                    getContact(resume, rs);
                 } while (rs.next());
             }
             try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM section WHERE section.resume_uuid = ?")) {
@@ -100,19 +95,15 @@ public class SqlStorage implements Storage {
                 ResultSet resultSet = ps.executeQuery();
                 while (resultSet.next()) {
                     String resume_uuid = resultSet.getString("resume_uuid");
-                    String ct = resultSet.getString("type");
-                    if (ct != null) {
-                        String value = resultSet.getString("value");
-                        resumeMap.get(resume_uuid).getContact().put(ContactType.valueOf(ct), value);
-                    }
+                        getContact(resumeMap.get(resume_uuid), resultSet);
                 }
             }
             for (Map.Entry<String, Resume> entry : resumeMap.entrySet()) {
-                    try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM section WHERE section.resume_uuid = ?")) {
-                        ps.setString(1, entry.getKey());
-                        ResultSet resultSet = ps.executeQuery();
-                        getSection(entry.getValue(), resultSet);
-                    }
+                try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM section WHERE section.resume_uuid = ?")) {
+                    ps.setString(1, entry.getKey());
+                    ResultSet resultSet = ps.executeQuery();
+                    getSection(entry.getValue(), resultSet);
+                }
             }
             return new ArrayList<>(resumeMap.values());
         });
@@ -140,6 +131,33 @@ public class SqlStorage implements Storage {
             ResultSet resultSet = ps.executeQuery();
             return resultSet.next() ? resultSet.getInt(1) : 0;
         });
+    }
+
+    private void getContact(Resume resume, ResultSet rs) throws SQLException {
+        String ct = rs.getString("type");
+        if (ct != null) {
+            String value = rs.getString("value");
+            resume.getContact().put(ContactType.valueOf(ct), value);
+        }
+    }
+
+    private void getSection(Resume resume, ResultSet rs) throws SQLException {
+        while (rs.next()) {
+            String st = rs.getString("section_type");
+            if (st != null) {
+                SectionType sectionType = SectionType.valueOf(st);
+                switch (sectionType) {
+                    case PERSONAL:
+                    case OBJECTIVE:
+                        resume.getSection().put(sectionType, new SimpleTextSection(rs.getString("description")));
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        resume.getSection().put(sectionType, new ListSection(Arrays.asList(rs.getString("description").split("\n"))));
+                        break;
+                }
+            }
+        }
     }
 
     private void insertSection(Connection connection, Resume resume) throws SQLException {
@@ -174,25 +192,6 @@ public class SqlStorage implements Storage {
                 ps.addBatch();
             }
             ps.executeBatch();
-        }
-    }
-
-    private void getSection(Resume resume, ResultSet rs) throws SQLException {
-        while (rs.next()) {
-            String st = rs.getString("section_type");
-            if (st != null) {
-                SectionType sectionType = SectionType.valueOf(st);
-                switch (sectionType) {
-                    case PERSONAL:
-                    case OBJECTIVE:
-                        resume.getSection().put(sectionType, new SimpleTextSection(rs.getString("description")));
-                        break;
-                    case ACHIEVEMENT:
-                    case QUALIFICATIONS:
-                        resume.getSection().put(sectionType, new ListSection(Arrays.asList(rs.getString("description").split("\n"))));
-                        break;
-                }
-            }
         }
     }
 }
