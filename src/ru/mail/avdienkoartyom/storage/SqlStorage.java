@@ -73,7 +73,9 @@ public class SqlStorage implements Storage {
             try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM section WHERE section.resume_uuid = ?")) {
                 ps.setString(1, resume.getUuid());
                 ResultSet rs = ps.executeQuery();
-                getSection(resume, rs);
+                while (rs.next()) {
+                    getSection(resume, rs);
+                }
             }
             return resume;
         });
@@ -100,12 +102,12 @@ public class SqlStorage implements Storage {
             }
 
             try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM section")) {
-                for (Map.Entry<String, Resume> entry : resumeMap.entrySet()) {
-                    ResultSet resultSet = ps.executeQuery();
-                    getSection(entry.getValue(), resultSet);
+                ResultSet resultSet = ps.executeQuery();
+                while (resultSet.next()) {
+                    String resume_uuid = resultSet.getString("resume_uuid");
+                    getSection(resumeMap.get(resume_uuid), resultSet);
                 }
             }
-  
             return new ArrayList<>(resumeMap.values());
         });
     }
@@ -143,22 +145,18 @@ public class SqlStorage implements Storage {
     }
 
     private void getSection(Resume resume, ResultSet rs) throws SQLException {
-        while (rs.next()) {
-            if (rs.getString("resume_uuid").equals(resume.getUuid())) {
-                String st = rs.getString("section_type");
-                if (st != null) {
-                    SectionType sectionType = SectionType.valueOf(st);
-                    switch (sectionType) {
-                        case PERSONAL:
-                        case OBJECTIVE:
-                            resume.getSection().put(sectionType, new SimpleTextSection(rs.getString("description")));
-                            break;
-                        case ACHIEVEMENT:
-                        case QUALIFICATIONS:
-                            resume.getSection().put(sectionType, new ListSection(Arrays.asList(rs.getString("description").split("\n"))));
-                            break;
-                    }
-                }
+        String st = rs.getString("section_type");
+        if (st != null) {
+            SectionType sectionType = SectionType.valueOf(st);
+            switch (sectionType) {
+                case PERSONAL:
+                case OBJECTIVE:
+                    resume.getSection().put(sectionType, new SimpleTextSection(rs.getString("description")));
+                    break;
+                case ACHIEVEMENT:
+                case QUALIFICATIONS:
+                    resume.getSection().put(sectionType, new ListSection(Arrays.asList(rs.getString("description").split("\n"))));
+                    break;
             }
         }
     }
