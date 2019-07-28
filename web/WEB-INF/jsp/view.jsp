@@ -1,6 +1,7 @@
 <%@ page import="ru.mail.avdienkoartyom.model.Resume" %>
 <%@ page import="java.util.List" %>
 <%@ page import="ru.mail.avdienkoartyom.model.ContactType" %>
+<%@ page import="ru.mail.avdienkoartyom.util.ToHtmlContact" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -18,7 +19,7 @@
         <c:forEach var="contactEntry" items="${resume.contact}">
             <jsp:useBean id="contactEntry"
                          type="java.util.Map.Entry<ru.mail.avdienkoartyom.model.ContactType, java.lang.String>"/>
-            <%=contactEntry.getKey().toHtml(contactEntry.getValue())%></br>
+            <%=ToHtmlContact.toHtml(contactEntry.getKey(), contactEntry.getValue())%></br>
         </c:forEach>
     </p>
     <c:forEach var="sectionEntry" items="${resume.section}">
@@ -26,7 +27,7 @@
                      type="java.util.Map.Entry<ru.mail.avdienkoartyom.model.SectionType, ru.mail.avdienkoartyom.model.AbstractSection>"/>
         <h4><%=sectionEntry.getKey()%>
         </h4>
-        <p><%=sectionEntry.getValue().toString()%>></p>
+        <p><%=sectionEntry.getValue().toString().replaceAll("\n", "</br>")%>></p>
     </c:forEach>
 
 </section>

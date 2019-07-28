@@ -4,20 +4,40 @@ public enum ContactType {
     TELEPHONE("Телефон"),
     SKYPE("Skype"){
         @Override
-        public String toHtml0(String value) {
+        public String toHtml(String value) {
             return "<a href='skype:" + value + "'>" + value + "</a>";
         }
     },
     EMAIL("Почта"){
         @Override
-        public String toHtml0(String value) {
+        public String toHtml(String value) {
             return "<a href='mailto:" + value + "'>" + value + "</a>";
         }
     },
-    PROFILE_LINKEDIN("Профиль LinkedIn"),
-    PROFILE_GITHUB("Профиль GitHub"),
-    PROFILE_STACKOVERFLOW("Профиль Stackoverflow"),
-    HOMEPAGE("Домашняя страница");
+    PROFILE_LINKEDIN("Профиль LinkedIn"){
+        @Override
+        public String toHtml(String value) {
+            return "<a href='Linkedin:" + value + "'>" + value + "</a>";
+        }
+    },
+    PROFILE_GITHUB("Профиль GitHub"){
+        @Override
+        public String toHtml(String value) {
+            return "<a href='GitHub:" + value + "'>" + value + "</a>";
+        }
+    },
+    PROFILE_STACKOVERFLOW("Профиль Stackoverflow"){
+        @Override
+        public String toHtml(String value) {
+            return "<a href='StackOverFlow:" + value + "'>" + value + "</a>";
+        }
+    },
+    HOMEPAGE("Домашняя страница"){
+        @Override
+        public String toHtml(String value) {
+            return "<a href='HomePage:" + value + "'>" + value + "</a>";
+        }
+    };
 
     private String title;
 
@@ -29,10 +49,8 @@ public enum ContactType {
         this.title = title;
     }
 
-    public String toHtml0(String value){
+    public String toHtml(String value){
         return title + ": " + value;
     }
-    public String toHtml(String value){
-        return value==null? "" : toHtml0(value);
-    }
+
 }

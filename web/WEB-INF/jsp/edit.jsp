@@ -1,8 +1,9 @@
 <%@ page import="ru.mail.avdienkoartyom.model.Resume" %>
 <%@ page import="java.util.List" %>
 <%@ page import="ru.mail.avdienkoartyom.model.ContactType" %>
+<%@ page import="ru.mail.avdienkoartyom.model.SectionType" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta http-equiv="Content-type" content="text/html;" charset="UTF-8">
@@ -13,32 +14,48 @@
 <body>
 <jsp:include page="fragments/header.jsp"></jsp:include>
 <section>
-       <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
-           <input type="hidden" name="uuid" value="${resume.uuid}">
-           <dl>
-               <dt>Имя:</dt>
-               <dd>
-                   <input type="text" name="fullName" size=50 value="${resume.fullName}">
-               </dd>
-           </dl>
-           <p>
-           <h3>Контакты</h3>
-               <c:forEach var="type" items="<%=ContactType.values()%>">
-           <dl>
-               <dt>${type.title}</dt>
-               <dd>
-                   <input type="text" name="${type.name()}" size=30 value="${resume.contact.get(type)}">
-               </dd>
-           </dl>
-               </c:forEach>
-           </p>
-           <p>
+    <form id="addForm" method="post" action="resume" enctype="application/x-www-form-urlencoded">
+        <input type="hidden" name="uuid" value="${resume.uuid}">
+        <dl>
+            <dt>Имя:</dt>
+            <dd>
+                <input type="text" name="fullName" size=30 value="${resume.fullName}">
+            </dd>
+        </dl>
+        <p>
+        <h3>Контакты</h3>
+        <c:forEach var="type" items="<%=ContactType.values()%>">
+            <dl>
+                <dt>${type.title}</dt>
+                <dd>
+                    <input type="text" name="${type.name()}" size=30 value="${resume.contact.get(type)}">
+                </dd>
+            </dl>
+        </c:forEach>
+        </p>
+        <p>
+            <c:forEach var="type" items="<%=SectionType.values()%>">
+        <dl>
+        <dt><h3>${type.title}</h3></dt>
+        <c:if test="${type.name()=='PERSONAL'||type.name()=='OBJECTIVE'}">
+            <br>
+            <input type="text" name="${type.name()}" size="56" value="${type.title}"><br>
+        </c:if>
+        <c:if test="${type.name()=='ACHIEVEMENT'||type.name()=='QUALIFICATIONS'}">
+            <br>
+            <input type="text" name="${type.name()}" size="56" value="1"><br>
+            <input type="text" name="${type.name()}" size="56" value="2"><br>
+            <input type="text" name="${type.name()}" size="56" value="3"><br>
+        </c:if>
+        </dd>
+        </dl>
+        </c:forEach>
 
-           </p>
-           <hr>
-           <button type="submit">Сохранить</button>
-           <button onclick="window.history.back()">Отменить</button>
-       </form>
+        </p>
+        <hr>
+    </form>
+    <button form="addForm" type="submit">Сохранить</button>
+    <button form="addForm" onclick="window.history.back()">Отменить</button>
 </section>
 <jsp:include page="fragments/footer.jsp"></jsp:include>
 </body>

@@ -3,6 +3,7 @@ header{
     color: #2E6E9E;
     font-size: 20px;
     padding: 5px 20px;
+    text-align: center;
 }
 
 footer{
@@ -11,8 +12,22 @@ footer{
     font-size: 20px;
     padding: 5px 20px;
     margin: 20px 0;
+    text-align: center;
 }
 
+section{
+    margin: 2%;
+}
+
+#tableListResume{
+    margin: auto;
+}
+
+#addForm{
+    margin-inline-start: 20%;
+    margin-inline-end: 20%;
+
+}
 dl{
     background: no-repeat scroll 0 0 #FAFAFA;
     margin: 8px 0;
@@ -29,3 +44,4 @@ dd{
     margin-left: 8px;
     vertical-align: top;
 }
+

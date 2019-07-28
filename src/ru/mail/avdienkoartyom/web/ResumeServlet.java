@@ -2,15 +2,17 @@ package ru.mail.avdienkoartyom.web;
 
 import ru.mail.avdienkoartyom.Config;
 import ru.mail.avdienkoartyom.TestDataResume;
-import ru.mail.avdienkoartyom.model.ContactType;
-import ru.mail.avdienkoartyom.model.Resume;
+import ru.mail.avdienkoartyom.model.*;
 import ru.mail.avdienkoartyom.storage.SortedArrayStorage;
 import ru.mail.avdienkoartyom.storage.Storage;
+import sun.swing.SwingUtilities2;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.UUID;
 
 
 public class ResumeServlet extends javax.servlet.http.HttpServlet {
@@ -40,7 +42,11 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
                 return;
             case "view":
             case "edit":
-                r = storage.get(uuid);
+                if (uuid.equals("newResume")) {
+                    r = new Resume();
+                } else {
+                    r = storage.get(uuid);
+                }
                 break;
             default:
                 throw new IllegalStateException("Action " + action + " is illegal");
@@ -55,8 +61,25 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
         req.setCharacterEncoding("UTF-8");
         String uuid = req.getParameter("uuid");
         String fullName = req.getParameter("fullName");
-        Resume resume = storage.get(uuid);
-        resume.setFullName(fullName);
+        if (fullName != null && fullName.trim().length() != 0) {
+            Resume resume;
+            if (uuid.isEmpty()) {
+                resume = new Resume(fullName);
+                addContact(resume, req, resp);
+                addSection(resume, req, resp);
+                storage.save(resume);
+            } else {
+                resume = storage.get(uuid);
+                resume.setFullName(fullName);
+                addContact(resume, req, resp);
+                addSection(resume, req, resp);
+                storage.update(resume);
+            }
+        }
+        resp.sendRedirect("resume");
+    }
+
+    private void addContact(Resume resume, HttpServletRequest req, HttpServletResponse resp) {
         for (ContactType type : ContactType.values()) {
             String value = req.getParameter(type.name());
             if (value != null && value.trim().length() != 0) {
@@ -65,9 +88,26 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
                 resume.getContact().remove(type);
             }
         }
-        storage.update(resume);
-        resp.sendRedirect("resume");
+    }
 
+    private void addSection(Resume resume, HttpServletRequest req, HttpServletResponse resp) {
+        for (SectionType type : SectionType.values()) {
+            String value = req.getParameter(type.name());
+            String[] values = req.getParameterValues(type.name());
+            if (values != null && values.length != 0) {
+                switch (type) {
+                    case OBJECTIVE:
+                    case PERSONAL:
+                        resume.getSection().put(type, new SimpleTextSection(value));
+                        break;
+                    case QUALIFICATIONS:
+                    case ACHIEVEMENT:
+                        resume.getSection().put(type, new ListSection(Arrays.asList(values)));
+                }
 
+            } else {
+                resume.getSection().remove(type);
+            }
+        }
     }
 }
