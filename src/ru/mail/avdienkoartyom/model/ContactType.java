@@ -2,8 +2,18 @@ package ru.mail.avdienkoartyom.model;
 
 public enum ContactType {
     TELEPHONE("Телефон"),
-    SKYPE("Skype"),
-    EMAIL("Почта"),
+    SKYPE("Skype"){
+        @Override
+        public String toHtml0(String value) {
+            return "<a href='skype:" + value + "'>" + value + "</a>";
+        }
+    },
+    EMAIL("Почта"){
+        @Override
+        public String toHtml0(String value) {
+            return "<a href='mailto:" + value + "'>" + value + "</a>";
+        }
+    },
     PROFILE_LINKEDIN("Профиль LinkedIn"),
     PROFILE_GITHUB("Профиль GitHub"),
     PROFILE_STACKOVERFLOW("Профиль Stackoverflow"),
@@ -17,5 +27,12 @@ public enum ContactType {
 
     ContactType(String title) {
         this.title = title;
+    }
+
+    public String toHtml0(String value){
+        return title + ": " + value;
+    }
+    public String toHtml(String value){
+        return value==null? "" : toHtml0(value);
     }
 }

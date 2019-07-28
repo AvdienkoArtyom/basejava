@@ -1,6 +1,8 @@
 package ru.mail.avdienkoartyom.web;
 
+import ru.mail.avdienkoartyom.Config;
 import ru.mail.avdienkoartyom.TestDataResume;
+import ru.mail.avdienkoartyom.model.ContactType;
 import ru.mail.avdienkoartyom.model.Resume;
 import ru.mail.avdienkoartyom.storage.SortedArrayStorage;
 import ru.mail.avdienkoartyom.storage.Storage;
@@ -9,7 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.UUID;
+
 
 public class ResumeServlet extends javax.servlet.http.HttpServlet {
 
@@ -17,32 +19,55 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        storage = new SortedArrayStorage();
-        storage.save(TestDataResume.createResumeUUID(UUID.randomUUID().toString(), "Петр_1"));
-        storage.save(TestDataResume.createResumeUUIDWithOneContact(UUID.randomUUID().toString(), "Петр_2"));
-        storage.save(TestDataResume.createResumeUUIDWithoutContact(UUID.randomUUID().toString(), "Петр_3"));
+        storage = Config.getInstance().getStorage();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        resp.setCharacterEncoding("UTF-8");
-        resp.setContentType("text/html; charset=UTF-8");
+        String uuid = req.getParameter("uuid");
+        String action = req.getParameter("action");
 
-        StringBuilder stringResponse = new StringBuilder("<table align=\"center\" width=80% border=2>");
-        for (Resume resume : storage.getAllSorted()) {
-            stringResponse.append("<tr>");
-            stringResponse.append("<td> Полное имя:" + resume.getFullName() + "</td>");
-            stringResponse.append("<td> UUID:" + resume.getUuid() + "</td>");
-            stringResponse.append("</tr>");
-            stringResponse.append("<tr>");
+        if (action == null) {
+            req.setAttribute("resumes", storage.getAllSorted());
+            req.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(req, resp);
+            return;
         }
-        stringResponse.append("</table>");
-        resp.getWriter().write(stringResponse.toString());
+        Resume r;
+        switch (action) {
+            case "delete":
+                storage.delete(uuid);
+                resp.sendRedirect("resume");
+                return;
+            case "view":
+            case "edit":
+                r = storage.get(uuid);
+                break;
+            default:
+                throw new IllegalStateException("Action " + action + " is illegal");
+        }
+        req.setAttribute("resume", r);
+        req.getRequestDispatcher("view".equals(action) ? "WEB-INF/jsp/view.jsp" : "WEB-INF/jsp/edit.jsp").forward(req, resp);
+
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        req.setCharacterEncoding("UTF-8");
+        String uuid = req.getParameter("uuid");
+        String fullName = req.getParameter("fullName");
+        Resume resume = storage.get(uuid);
+        resume.setFullName(fullName);
+        for (ContactType type : ContactType.values()) {
+            String value = req.getParameter(type.name());
+            if (value != null && value.trim().length() != 0) {
+                resume.getContact().put(type, value);
+            } else {
+                resume.getContact().remove(type);
+            }
+        }
+        storage.update(resume);
+        resp.sendRedirect("resume");
+
+
     }
 }
