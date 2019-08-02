@@ -19,7 +19,6 @@
                 <th>Email:</th>
                 <th></th>
                 <th></th>
-
             </tr>
             <c:forEach items="${resumes}" var="resume">
                 <jsp:useBean id="resume" type="ru.mail.avdienkoartyom.model.Resume"/>
@@ -35,7 +34,6 @@
                 <td colspan="4"><a href="resume?uuid=${"newResume"}&action=edit">Добавить новое резме.</a></td>
             </tr>
         </table>
-
 </section>
 <jsp:include page="fragments/footer.jsp"></jsp:include>
 </body>

@@ -43,8 +43,13 @@
             </c:if>
             <c:if test="${type.name()=='ACHIEVEMENT'||type.name()=='QUALIFICATIONS'}">
                 <br>
-                <input type="text" name="${type.name()}" size="56" value="${resume.section.get(type)}"><br>
-                <input type="text" name="${type.name()}" size="56" value="Добавить ещё..."><br>
+                <textarea type="text" rows="10" cols="45" name="${type.name()}">${resume.section.get(type)}
+                </textarea>
+            </c:if>
+            <c:if test="${type.name()=='EXPERIENCE'||type.name()=='EDUCATION'}">
+                <br>
+                <textarea type="text" rows="10" cols="45" name="${type.name()}" readonly>${resume.section.get(type)}
+                </textarea>
             </c:if>
             </dd>
         </dl>

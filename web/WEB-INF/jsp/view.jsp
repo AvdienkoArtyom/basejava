@@ -27,9 +27,9 @@
                      type="java.util.Map.Entry<ru.mail.avdienkoartyom.model.SectionType, ru.mail.avdienkoartyom.model.AbstractSection>"/>
         <h4><%=sectionEntry.getKey()%>
         </h4>
-        <p><%=sectionEntry.getValue().toString().replaceAll("\n", "</br>")%>></p>
+        <p><%=sectionEntry.getValue().toString().replaceAll("\n", "</br>")%>
+        </p>
     </c:forEach>
-
 </section>
 <jsp:include page="fragments/footer.jsp"></jsp:include>
 </body>
