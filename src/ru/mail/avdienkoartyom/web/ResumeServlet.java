@@ -42,11 +42,7 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
                 return;
             case "view":
             case "edit":
-                if (uuid.equals("newResume")) {
-                    r = new Resume();
-                } else {
-                    r = storage.get(uuid);
-                }
+                r = uuid.equals("newResume") ? new Resume() : storage.get(uuid);
                 break;
             default:
                 throw new IllegalStateException("Action " + action + " is illegal");
@@ -63,16 +59,18 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
         String fullName = req.getParameter("fullName");
         if (fullName != null && fullName.trim().length() != 0) {
             Resume resume;
-            if (uuid.isEmpty()) {
+            boolean isNew = uuid.isEmpty();
+            if (isNew) {
                 resume = new Resume(fullName);
-                addContact(resume, req, resp);
-                addSection(resume, req, resp);
-                storage.save(resume);
             } else {
                 resume = storage.get(uuid);
                 resume.setFullName(fullName);
-                addContact(resume, req, resp);
-                addSection(resume, req, resp);
+            }
+            addContact(resume, req, resp);
+            addSection(resume, req, resp);
+            if (isNew) {
+                storage.save(resume);
+            } else {
                 storage.update(resume);
             }
         }
@@ -103,8 +101,9 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
                     case QUALIFICATIONS:
                     case ACHIEVEMENT:
                         resume.getSection().put(type, new ListSection(Arrays.asList(values)));
+                    case EXPERIENCE:
+                    case EDUCATION:
                 }
-
             } else {
                 resume.getSection().remove(type);
             }

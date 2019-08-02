@@ -2,40 +2,40 @@ package ru.mail.avdienkoartyom.model;
 
 public enum ContactType {
     TELEPHONE("Телефон"),
-    SKYPE("Skype"){
+    SKYPE("Skype") {
         @Override
         public String toHtml(String value) {
-            return "<a href='skype:" + value + "'>" + value + "</a>";
+            return toLink(value);
         }
     },
-    EMAIL("Почта"){
+    EMAIL("Почта") {
         @Override
         public String toHtml(String value) {
-            return "<a href='mailto:" + value + "'>" + value + "</a>";
+            return toLink(value);
         }
     },
-    PROFILE_LINKEDIN("Профиль LinkedIn"){
+    PROFILE_LINKEDIN("Профиль LinkedIn") {
         @Override
         public String toHtml(String value) {
-            return "<a href='Linkedin:" + value + "'>" + value + "</a>";
+            return toLink(value);
         }
     },
-    PROFILE_GITHUB("Профиль GitHub"){
+    PROFILE_GITHUB("Профиль GitHub") {
         @Override
         public String toHtml(String value) {
-            return "<a href='GitHub:" + value + "'>" + value + "</a>";
+            return toLink(value);
         }
     },
-    PROFILE_STACKOVERFLOW("Профиль Stackoverflow"){
+    PROFILE_STACKOVERFLOW("Профиль Stackoverflow") {
         @Override
         public String toHtml(String value) {
-            return "<a href='StackOverFlow:" + value + "'>" + value + "</a>";
+            return toLink(value);
         }
     },
-    HOMEPAGE("Домашняя страница"){
+    HOMEPAGE("Домашняя страница") {
         @Override
         public String toHtml(String value) {
-            return "<a href='HomePage:" + value + "'>" + value + "</a>";
+            return toLink(value);
         }
     };
 
@@ -49,8 +49,17 @@ public enum ContactType {
         this.title = title;
     }
 
-    public String toHtml(String value){
+    public String toHtml(String value) {
         return title + ": " + value;
+    }
+
+
+    public String toLink(String href) {
+        return toLink(href, title);
+    }
+
+    public String toLink(String href, String value) {
+        return value + ": <a href=" + href + ">" + href + "</a>";
     }
 
 }

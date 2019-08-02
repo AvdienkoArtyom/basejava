@@ -23,11 +23,13 @@ section{
     margin: auto;
 }
 
-#addForm{
+#addForm,#viewResume{
     margin-inline-start: 20%;
     margin-inline-end: 20%;
-
 }
+
+
+
 dl{
     background: no-repeat scroll 0 0 #FAFAFA;
     margin: 8px 0;

@@ -36,21 +36,19 @@
         <p>
             <c:forEach var="type" items="<%=SectionType.values()%>">
         <dl>
-        <dt><h3>${type.title}</h3></dt>
-        <c:if test="${type.name()=='PERSONAL'||type.name()=='OBJECTIVE'}">
-            <br>
-            <input type="text" name="${type.name()}" size="56" value="${type.title}"><br>
-        </c:if>
-        <c:if test="${type.name()=='ACHIEVEMENT'||type.name()=='QUALIFICATIONS'}">
-            <br>
-            <input type="text" name="${type.name()}" size="56" value="1"><br>
-            <input type="text" name="${type.name()}" size="56" value="2"><br>
-            <input type="text" name="${type.name()}" size="56" value="3"><br>
-        </c:if>
-        </dd>
+            <dt><h3>${type.title}</h3></dt>
+            <c:if test="${type.name()=='PERSONAL'||type.name()=='OBJECTIVE'}">
+                <br>
+                <input type="text" name="${type.name()}" size="56" value="${resume.section.get(type)}"><br>
+            </c:if>
+            <c:if test="${type.name()=='ACHIEVEMENT'||type.name()=='QUALIFICATIONS'}">
+                <br>
+                <input type="text" name="${type.name()}" size="56" value="${resume.section.get(type)}"><br>
+                <input type="text" name="${type.name()}" size="56" value="Добавить ещё..."><br>
+            </c:if>
+            </dd>
         </dl>
         </c:forEach>
-
         </p>
         <hr>
     </form>

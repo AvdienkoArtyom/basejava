@@ -4,6 +4,7 @@ package ru.mail.avdienkoartyom.storage;
 import ru.mail.avdienkoartyom.exception.NoExistStorageException;
 import ru.mail.avdienkoartyom.model.*;
 import ru.mail.avdienkoartyom.sql.SqlHelper;
+import ru.mail.avdienkoartyom.util.JsonParser;
 
 import java.sql.*;
 import java.util.*;
@@ -29,8 +30,8 @@ public class SqlStorage implements Storage {
                 ps.setString(2, resume.getFullName());
                 ps.execute();
             }
-            insertContact(connection, resume);
-            insertSection(connection, resume);
+            insertContacts(connection, resume);
+            insertSections(connection, resume);
             return null;
         });
     }
@@ -53,8 +54,8 @@ public class SqlStorage implements Storage {
                 ps.setString(1, resume.getUuid());
                 ps.executeUpdate();
             }
-            insertContact(connection, resume);
-            insertSection(connection, resume);
+            insertContacts(connection, resume);
+            insertSections(connection, resume);
             return null;
         });
     }
@@ -150,44 +151,27 @@ public class SqlStorage implements Storage {
     }
 
     private void getSection(Resume resume, ResultSet rs) throws SQLException {
-        String st = rs.getString("section_type");
-        if (st != null) {
-            SectionType sectionType = SectionType.valueOf(st);
-            switch (sectionType) {
-                case PERSONAL:
-                case OBJECTIVE:
-                    resume.getSection().put(sectionType, new SimpleTextSection(rs.getString("description")));
-                    break;
-                case ACHIEVEMENT:
-                case QUALIFICATIONS:
-                    resume.getSection().put(sectionType, new ListSection(Arrays.asList(rs.getString("description").split("\n"))));
-                    break;
-            }
+        String content = rs.getString("description");
+        if (content != null) {
+            SectionType type = SectionType.valueOf(rs.getString("section_type"));
+            resume.getSection().put(type, JsonParser.read(content, AbstractSection.class));
         }
     }
 
-    private void insertSection(Connection connection, Resume resume) throws SQLException {
+    private void insertSections(Connection connection, Resume resume) throws SQLException {
         try (PreparedStatement ps = connection.prepareStatement("INSERT INTO section (resume_uuid, section_type, description) VALUES (?,?,?)")) {
             for (Map.Entry<SectionType, AbstractSection> sectionEntry : resume.getSection().entrySet()) {
-                SectionType sectionType = sectionEntry.getKey();
-                AbstractSection abstractSection = sectionEntry.getValue();
                 ps.setString(1, resume.getUuid());
-                ps.setString(2, sectionType.name());
-                switch (sectionType) {
-                    case PERSONAL:
-                    case OBJECTIVE:
-                        ps.setString(3, ((SimpleTextSection) abstractSection).getDescription());
-                    case ACHIEVEMENT:
-                    case QUALIFICATIONS:
-                        ps.setString(3, abstractSection.toString());
-                }
+                ps.setString(2, sectionEntry.getKey().name());
+                AbstractSection section = sectionEntry.getValue();
+                ps.setString(3, JsonParser.write(section, AbstractSection.class));
                 ps.addBatch();
             }
             ps.executeBatch();
         }
     }
 
-    private void insertContact(Connection connection, Resume resume) throws SQLException {
+    private void insertContacts(Connection connection, Resume resume) throws SQLException {
         try (PreparedStatement ps = connection.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)")) {
             ps.setString(1, resume.getUuid());
             for (Map.Entry<ContactType, String> e : resume.getContact().entrySet()) {
