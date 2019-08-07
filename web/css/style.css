@@ -30,6 +30,7 @@ section{
 
 
 
+
 dl{
     background: no-repeat scroll 0 0 #FAFAFA;
     margin: 8px 0;
@@ -47,3 +48,6 @@ dd{
     vertical-align: top;
 }
 
+div.inputExpEdu{
+    margin-top: 15px;
+}

@@ -25,7 +25,7 @@
     <c:forEach var="sectionEntry" items="${resume.section}">
         <jsp:useBean id="sectionEntry"
                      type="java.util.Map.Entry<ru.mail.avdienkoartyom.model.SectionType, ru.mail.avdienkoartyom.model.AbstractSection>"/>
-        <h4><%=sectionEntry.getKey()%>
+        <h4><%=sectionEntry.getKey().getTitle()%>
         </h4>
         <p><%=sectionEntry.getValue().toString().replaceAll("\n", "</br>")%>
         </p>

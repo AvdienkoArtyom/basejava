@@ -48,12 +48,13 @@ public class Organization implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(title + "\n");
+        sb.append(url + "\n");
 
         for (Position p : positionList) {
             if (p.getStatus().isEmpty()) {
-                sb.append(p.getDateStart() + " " + p.getDateFinish() + "\n" + p.getDescription() + "\n" + url + "\n");
+                sb.append(p.getDateStart() + " " + p.getDateFinish() + "\n" + p.getDescription() + "\n");
             } else {
-                sb.append(p.getDateStart() + " " + p.getDateFinish() + "\n" + p.getStatus() + "\n" + p.getDescription() + "\n" + url + "\n");
+                sb.append(p.getDateStart() + " " + p.getDateFinish() + "\n" + p.getStatus() + "\n" + p.getDescription() + "\n");
             }
         }
         return sb.toString();

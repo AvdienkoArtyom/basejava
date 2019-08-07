@@ -5,13 +5,18 @@ import ru.mail.avdienkoartyom.TestDataResume;
 import ru.mail.avdienkoartyom.model.*;
 import ru.mail.avdienkoartyom.storage.SortedArrayStorage;
 import ru.mail.avdienkoartyom.storage.Storage;
+import ru.mail.avdienkoartyom.util.DateUtil;
 import sun.swing.SwingUtilities2;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -91,22 +96,107 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
     private void addSection(Resume resume, HttpServletRequest req, HttpServletResponse resp) {
         for (SectionType type : SectionType.values()) {
             String value = req.getParameter(type.name());
-            String[] values = req.getParameterValues(type.name());
-            if (values != null && values.length != 0) {
-                switch (type) {
-                    case OBJECTIVE:
-                    case PERSONAL:
-                        resume.getSection().put(type, new SimpleTextSection(value));
-                        break;
-                    case QUALIFICATIONS:
-                    case ACHIEVEMENT:
-                        resume.getSection().put(type, new ListSection(Arrays.asList(values)));
-                    case EXPERIENCE:
-                    case EDUCATION:
-                }
-            } else {
-                resume.getSection().remove(type);
+            String title;
+            String url;
+            List<Position> positionList;
+            List<Organization> organizationList;
+            switch (type) {
+                case OBJECTIVE:
+                case PERSONAL:
+                    resume.getSection().put(type, new SimpleTextSection(value));
+                    break;
+                case QUALIFICATIONS:
+                case ACHIEVEMENT:
+                    resume.getSection().put(type, new ListSection(Arrays.asList(value.split("\r\n"))));
+                    break;
+                case EXPERIENCE:
+                    organizationList = new ArrayList<>();
+
+                    int countExp = Integer.valueOf(req.getParameter("countExp"));
+
+                    for (int i = 0; i < countExp; i++) {
+                        title = req.getParameter(i + "titleExp");
+                        if (title.trim().length() != 0) {
+                            url = req.getParameter(i + "urlExp");
+                            int countOrgExp = Integer.valueOf(req.getParameter(i + "countOrgExp"));
+                            positionList = new ArrayList<>();
+                            for (int j = 0; j < countOrgExp; j++) {
+                                String[] startString = req.getParameter(i + "positionStartExp" + j).split("-");
+                                LocalDate start = LocalDate.of(Integer.valueOf(startString[0]), Integer.valueOf(startString[1]), Integer.valueOf(startString[2]));
+
+                                String[] finishString = req.getParameter(i + "positionFinishExp" + j).split("-");
+                                LocalDate finish = LocalDate.of(Integer.valueOf(finishString[0]), Integer.valueOf(finishString[1]), Integer.valueOf(finishString[2]));
+
+                                String status = req.getParameter(i + "positionStatusExp" + j);
+
+                                String description = req.getParameter(i + "positionDescriptionExp" + j);
+                                positionList.add(new Position(start, finish, status, description));
+                            }
+                            organizationList.add(new Organization(title, url, positionList));
+                        }
+                    }
+                    String newTitleExp = req.getParameter("titleExp");
+                    if (newTitleExp.trim().length() != 0) {
+                        String newUrl = req.getParameter("urlExp");
+                        String[] startString = req.getParameter("positionStartExp").split("-");
+                        LocalDate start = LocalDate.of(Integer.valueOf(startString[0]), Integer.valueOf(startString[1]), Integer.valueOf(startString[2]));
+
+                        String[] finishString = req.getParameter("positionFinishExp").split("-");
+                        LocalDate finish = LocalDate.of(Integer.valueOf(finishString[0]), Integer.valueOf(finishString[1]), Integer.valueOf(finishString[2]));
+
+                        String status = req.getParameter("positionStatusExp");
+
+                        String description = req.getParameter("positionDescriptionExp");
+                        List<Position> newPositionList = new ArrayList<>();
+                        newPositionList.add(new Position(start, finish, status, description));
+                        organizationList.add(new Organization(newTitleExp, newUrl, newPositionList));
+                    }
+                    resume.getSection().put(SectionType.EXPERIENCE, new OrganizationSection(organizationList));
+                    break;
+
+                case EDUCATION:
+                    organizationList = new ArrayList<>();
+
+                    int countEdu = Integer.valueOf(req.getParameter("countEdu"));
+
+                    for (int i = 0; i < countEdu; i++) {
+
+                        title = req.getParameter(i + "titleEdu");
+                        if (title.trim().length() != 0) {
+                            url = req.getParameter(i + "urlEdu");
+                            int countOrgEdu = Integer.valueOf(req.getParameter(i + "countOrgEdu"));
+                            positionList = new ArrayList<>();
+                            for (int j = 0; j < countOrgEdu; j++) {
+                                String[] startString = req.getParameter(i + "positionStartEdu" + j).split("-");
+                                LocalDate start = LocalDate.of(Integer.valueOf(startString[0]), Integer.valueOf(startString[1]), Integer.valueOf(startString[2]));
+
+                                String[] finishString = req.getParameter(i + "positionFinishEdu" + j).split("-");
+                                LocalDate finish = LocalDate.of(Integer.valueOf(finishString[0]), Integer.valueOf(finishString[1]), Integer.valueOf(finishString[2]));
+
+                                String description = req.getParameter(i + "positionDescriptionEdu" + j);
+                                positionList.add(new Position(start, finish, description));
+                            }
+                            organizationList.add(new Organization(title, url, positionList));
+                        }
+                    }
+                    String newTitleEdu = req.getParameter("titleEdu");
+                    if (newTitleEdu.trim().length() != 0) {
+                        String newUrl = req.getParameter("urlEdu");
+                        String[] startString = req.getParameter("positionStartEdu").split("-");
+                        LocalDate start = LocalDate.of(Integer.valueOf(startString[0]), Integer.valueOf(startString[1]), Integer.valueOf(startString[2]));
+
+                        String[] finishString = req.getParameter("positionFinishEdu").split("-");
+                        LocalDate finish = LocalDate.of(Integer.valueOf(finishString[0]), Integer.valueOf(finishString[1]), Integer.valueOf(finishString[2]));
+
+                        String description = req.getParameter("positionDescriptionEdu");
+                        List<Position> newPositionList = new ArrayList<>();
+                        newPositionList.add(new Position(start, finish, description));
+                        organizationList.add(new Organization(newTitleEdu, newUrl, newPositionList));
+                    }
+                    resume.getSection().put(SectionType.EDUCATION, new OrganizationSection(organizationList));
+                    break;
             }
         }
     }
+
 }
