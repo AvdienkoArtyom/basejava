@@ -1,9 +1,10 @@
 package ru.mail.avdienkoartyom.model;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public class OrganizationSection extends AbstractSection {
+public class OrganizationSection extends AbstractSection implements Serializable {
     private static final long serialVersionUID = 1L;
     private List<Organization> organizationList;
 
@@ -16,6 +17,10 @@ public class OrganizationSection extends AbstractSection {
 
     public List<Organization> getOrganizationList() {
         return organizationList;
+    }
+
+    public void setOrganizationList(List<Organization> organizationList) {
+        this.organizationList = organizationList;
     }
 
     @Override

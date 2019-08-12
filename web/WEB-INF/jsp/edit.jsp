@@ -1,11 +1,5 @@
-<%@ page import="ru.mail.avdienkoartyom.model.Resume" %>
-<%@ page import="java.util.List" %>
 <%@ page import="ru.mail.avdienkoartyom.model.ContactType" %>
 <%@ page import="ru.mail.avdienkoartyom.model.SectionType" %>
-<%@ page import="ru.mail.avdienkoartyom.model.OrganizationSection" %>
-<%@ page import="ru.mail.avdienkoartyom.model.Organization" %>
-<%@ page import="ru.mail.avdienkoartyom.model.Position" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -26,7 +20,6 @@
                 <input type="text" name="fullName" size=30 value="${resume.fullName}">
             </dd>
         </dl>
-        <p>
         <h3>Контакты</h3>
         <c:forEach var="type" items="<%=ContactType.values()%>">
             <dl>
@@ -36,140 +29,259 @@
                 </dd>
             </dl>
         </c:forEach>
-        </p>
-        <p>
-            <c:forEach var="type" items="<%=SectionType.values()%>">
-        <dl>
-            <dd>
-            <dt><h3>${type.title}</h3></dt>
-            <c:if test="${type.name()=='PERSONAL'||type.name()=='OBJECTIVE'}">
-                <br>
-                <input type="text" name="${type.name()}" size="56" value="${resume.section.get(type)}"><br>
-            </c:if>
-            <c:if test="${type.name()=='ACHIEVEMENT'||type.name()=='QUALIFICATIONS'}">
-                <br>
-                <textarea type="text" rows="10" cols="45" name="${type.name()}">${resume.section.get(type)}</textarea>
-            </c:if>
-            </dd>
-        </dl>
-        <dl>
-            <dd>
-                <c:choose>
-                <c:when test="${type.name()=='EXPERIENCE'}">
-                        <%
-                            OrganizationSection organizationSectionExp = (OrganizationSection) resume.getSection().get(SectionType.EXPERIENCE);
-                            if (organizationSectionExp != null) {
-                                int sizeExp = organizationSectionExp.getOrganizationList().size();
-                                int count = 0;
-                                for (Organization organization : organizationSectionExp.getOrganizationList()) {
-                                    int countTwo = 0;
-                        %>
-                <input type="hidden" name="countExp" value="<%=sizeExp%>">
+        <c:forEach var="type" items="<%=SectionType.values()%>">
+            <jsp:useBean id="organizationExp" type="ru.mail.avdienkoartyom.model.OrganizationSection" scope="request"/>
+            <jsp:useBean id="organizationEdu" type="ru.mail.avdienkoartyom.model.OrganizationSection" scope="request"/>
+            <c:choose>
+                <c:when test="${type.name()=='PERSONAL'||type.name()=='OBJECTIVE'}">
+                    <dl>
+                        <dt>
+                            <h3>${type.name()}</h3>
+                        </dt>
+                        <dd>
+                            <input type="text" name="${type.name()}" size="56" value="${resume.section.get(type)}"><br>
+                        </dd>
+                    </dl>
+                </c:when>
+                <c:when test="${type.name()=='ACHIEVEMENT'||type.name()=='QUALIFICATIONS'}">
+                    <dl>
+                        <dt>
+                            <h3>${type.name()}</h3>
+                        </dt>
+                        <dd>
+                            <textarea type="text" rows="10" cols="45"
+                                      name="${type.name()}">${resume.section.get(type)}</textarea>
+                        </dd>
+                    </dl>
+                </c:when>
+                <c:when test="${type=='EXPERIENCE'}">
+                    <h3>${type.name()}</h3>
+                    <c:if test="${organizationExp.organizationList.size()!=0}">
+                        <c:forEach var="organization"
+                                   items="${organizationExp.organizationList}"
+                                   varStatus="counter">
+                            <dl>
+                                <dt>
+                                    Название организации:
+                                </dt>
+                                <dd>
+                                    <input type="text" name="${counter.count}titleExp" size="56"
+                                           value="${organization.title}">
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>
+                                    сайт оргаизации:
+                                </dt>
+                                <dd>
+                                    <input type="text" name="${counter.count}urlExp" size="56"
+                                           value="${organization.url}">
+                                </dd>
+                            </dl>
+                            <c:forEach var="position" items="${organization.positionList}"
+                                       varStatus="counterPosition">
+                                <dl>
+                                    <dt>
+                                        начало карьеры:
+                                    </dt>
+                                    <dd>
+                                        <input type="text"
+                                               name="${counter.count}positionStartExp${counterPosition.count}" size="56"
+                                               value="${position.dateStart}">
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>
+                                        окончание карьеры:
+                                    </dt>
+                                    <dd>
+                                        <input type="text"
+                                               name="${counter.count}positionFinishExp${counterPosition.count}"
+                                               size="56"
+                                               value="${position.dateFinish}">
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>
+                                        должность:
+                                    </dt>
+                                    <dd>
+                                        <input type="text"
+                                               name="${counter.count}positionStatusExp${counterPosition.count}"
+                                               size="56"
+                                               value="${position.status}">
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>
+                                        описание:
+                                    </dt>
+                                    <dd>
+                                        <input type="text"
+                                               name="${counter.count}positionDescriptionExp${counterPosition.count}"
+                                               size="56"
+                                               value="${position.description}">
+                                    </dd>
+                                </dl>
+                            </c:forEach>
+                        </c:forEach>
+                    </c:if>
+                    <h4>Добавить организацию:</h4>
+                    <dl>
+                        <dt>
+                            Название организации:
+                        </dt>
+                        <dd>
+                            <input type="text" name="titleExp" size="56" value="">
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>
+                            сайт оргаизации:
+                        </dt>
+                        <dd>
+                            <input type="text" name="urlExp" size="56" value=""><br>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>
+                            начало карьеры:
+                        </dt>
+                        <dd>
+                            <input type="text" name="positionStartExp" size="56" placeholder="год-месяц-день" value="">
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>
+                            окончание карьеры:
+                        </dt>
+                        <dd>
+                            <input type="text" name="positionFinishExp" size="56" placeholder="год-месяц-день" value="">
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>
+                            должность:
+                        </dt>
+                        <dd>
+                            <input type="text" name="positionStatusExp" size="56" value="">
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>
+                            описание:
+                        </dt>
+                        <dd>
+                            <input type="text" name="positionDescriptionExp" size="56" value="">
+                        </dd>
+                    </dl>
+                </c:when>
+                <c:when test="${type=='EDUCATION'}">
+                    <h3>${type.name()}</h3>
+                    <c:if test="${organizationEdu.organizationList.size()!=0}">
+                        <c:forEach var="organization"
+                                   items="${organizationEdu.organizationList}"
+                                   varStatus="counter">
+                            <dl>
+                                <dt>
+                                    Название организации:
+                                </dt>
+                                <dd>
+                                    <input type="text" name="${counter.count}titleEdu" size="56"
+                                           value="${organization.title}">
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>
+                                    сайт оргаизации:
+                                </dt>
+                                <dd>
+                                    <input type="text" name="${counter.count}urlEdu" size="56"
+                                           value="${organization.url}">
+                                </dd>
+                            </dl>
+                            <c:forEach var="position" items="${organization.positionList}"
+                                       varStatus="counterPosition">
+                                <dl>
+                                    <dt>
+                                        начало карьеры:
+                                    </dt>
+                                    <dd>
+                                        <input type="text"
+                                               name="${counter.count}positionStartEdu${counterPosition.count}" size="56"
+                                               value="${position.dateStart}">
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>
+                                        окончание карьеры:
+                                    </dt>
+                                    <dd>
+                                        <input type="text"
+                                               name="${counter.count}positionFinishEdu${counterPosition.count}"
+                                               size="56"
+                                               value="${position.dateFinish}">
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>
+                                        описание:
+                                    </dt>
+                                    <dd>
+                                        <input type="text"
+                                               name="${counter.count}positionDescriptionEdu${counterPosition.count}"
+                                               size="56"
+                                               value="${position.description}">
+                                    </dd>
+                                </dl>
+                            </c:forEach>
+                        </c:forEach>
+                    </c:if>
+                    <h4>Добавить организацию:</h4>
+                    <dl>
+                        <dt>
+                            Название организации:
+                        </dt>
+                        <dd>
+                            <input type="text" name="titleEdu" size="56" value="">
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>
+                            сайт оргаизации:
+                        </dt>
+                        <dd>
+                            <input type="text" name="urlEdu" size="56" value=""><br>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>
+                            начало карьеры:
+                        </dt>
+                        <dd>
+                            <input type="text" name="positionStartEdu" size="56" placeholder="год-месяц-день" value="">
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>
+                            окончание карьеры:
+                        </dt>
+                        <dd>
+                            <input type="text" name="positionFinishEdu" size="56" placeholder="год-месяц-день" value="">
+                        </dd>
+                    </dl>
 
-            <dt>Название организации:</dt>
-            <input type="text" name="<%=count%>titleExp" size="56" value="<%=organization.getTitle()%>"><br>
-            <dt>сайт:</dt>
-            <input type="text" name="<%=count%>urlExp" size="56" value="<%=organization.getUrl()%>"><br>
-
-            <%
-                int sizeOrg = organization.getPositionList().size();
-
-                for (Position position : organization.getPositionList()) {
-            %>
-            <input type="hidden" name="<%=count%>countOrgExp" value="<%=sizeOrg%>">
-            <dt>начало раборы:</dt>
-            <input type="text" name="<%=count%>positionStartExp<%=countTwo%>" size="56"
-                   value="<%=position.getDateStart()%>"><br>
-            <dt>окончание работы:</dt>
-            <input type="text" name="<%=count%>positionFinishExp<%=countTwo%>" size="56"
-                   value="<%=position.getDateFinish()%>"><br>
-            <dt>статус:</dt>
-            <input type="text" name="<%=count%>positionStatusExp<%=countTwo%>" size="56"
-                   value="<%=position.getStatus()%>"><br>
-            <dt>описание:</dt>
-            <input type="text" name="<%=count%>positionDescriptionExp<%=countTwo%>" size="56"
-                   value="<%=position.getDescription()%>"><br>
-            <%
-                            count = count++;
-                        }
-                        count++;
-                    }
-                }
-            %>
-            <br>
-            <dt>Добавить организацию:</dt>
-            <br>
-            <dt>Название организации:</dt>
-            <input type="text" name="titleExp" size="56" value=""><br>
-            <dt>сайт:</dt>
-            <input type="text" name="urlExp" size="56" value=""><br>
-
-            <dt>начало раборы:</dt>
-            <input type="text" name="positionStartExp" size="56" placeholder="год-месяц-день" value=""><br>
-            <dt>окончание работы:</dt>
-            <input type="text" name="positionFinishExp" size="56" placeholder="год-месяц-день" value=""><br>
-            <dt>статус:</dt>
-            <input type="text" name="positionStatusExp" size="56" value=""><br>
-            <dt>описание:</dt>
-            <input type="text" name="positionDescriptionExp" size="56" value=""><br>
-            </c:when>
-
-            <c:when test="${type.name()=='EDUCATION'}">
-                <%
-                    OrganizationSection organizationSectionEdu = (OrganizationSection) resume.getSection().get(SectionType.EDUCATION);
-                    if (organizationSectionEdu != null) {
-                        int sizeEdu = organizationSectionEdu.getOrganizationList().size();
-                        int count = 0;
-                        for (Organization organization : organizationSectionEdu.getOrganizationList()) {
-                            int countTwo = 0;
-                %>
-                <input type="hidden" name="countEdu" value="<%=sizeEdu%>">
-                <dt>Название организации:</dt>
-                <input type="text" name="<%=count%>titleEdu" size="56" value="<%=organization.getTitle()%>"><br>
-                <dt>сайт:</dt>
-                <input type="text" name="<%=count%>urlEdu" size="56" value="<%=organization.getUrl()%>"><br>
-                <%
-                    int sizeOrg = organization.getPositionList().size();
-                    for (Position position : organization.getPositionList()) {
-                %>
-                <input type="hidden" name="<%=count%>countOrgEdu" value="<%=sizeOrg%>">
-                <dt>начало раборы:</dt>
-                <input type="text" name="<%=count%>positionStartEdu<%=countTwo%>" size="56"
-                       value="<%=position.getDateStart()%>"><br>
-                <dt>окончание работы:</dt>
-                <input type="text" name="<%=count%>positionFinishEdu<%=countTwo%>" size="56"
-                       value="<%=position.getDateFinish()%>"><br>
-                <dt>описание:</dt>
-                <input type="text" name="<%=count%>positionDescriptionEdu<%=countTwo%>" size="56"
-                       value="<%=position.getDescription()%>"><br>
-                <%
-                                countTwo++;
-                            }
-                            count++;
-                        }
-                    }
-                %>
-                <br>
-                <dt style="align: center">Добавить организацию:</dt>
-                <br>
-                <dt>Название организации:</dt>
-                <input type="text" name="titleEdu" size="56" value=""><br>
-                <dt>сайт:</dt>
-                <input type="text" name="urlEdu" size="56" value=""><br>
-
-                <dt>начало раборы:</dt>
-                <input type="text" name="positionStartEdu" placeholder="год-месяц-день" size="56" value=""><br>
-                <dt>окончание работы:</dt>
-                <input type="text" name="positionFinishEdu" placeholder="год-месяц-день" size="56" value=""><br>
-                <dt>описание:</dt>
-                <input type="text" name="positionDescriptionEdu" size="56" value=""><br>
-            </c:when>
+                    <dl>
+                        <dt>
+                            описание:
+                        </dt>
+                        <dd>
+                            <input type="text" name="positionDescriptionEdu" size="56" value="">
+                        </dd>
+                    </dl>
+                </c:when>
             </c:choose>
-            <br>
-            </dd>
-        </dl>
         </c:forEach>
-        </p>
         <hr>
     </form>
     <button form="addForm" type="submit">Сохранить</button>

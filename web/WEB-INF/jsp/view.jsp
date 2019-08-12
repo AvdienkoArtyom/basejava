@@ -1,6 +1,3 @@
-<%@ page import="ru.mail.avdienkoartyom.model.Resume" %>
-<%@ page import="java.util.List" %>
-<%@ page import="ru.mail.avdienkoartyom.model.ContactType" %>
 <%@ page import="ru.mail.avdienkoartyom.util.ToHtmlContact" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -25,10 +22,15 @@
     <c:forEach var="sectionEntry" items="${resume.section}">
         <jsp:useBean id="sectionEntry"
                      type="java.util.Map.Entry<ru.mail.avdienkoartyom.model.SectionType, ru.mail.avdienkoartyom.model.AbstractSection>"/>
-        <h4><%=sectionEntry.getKey().getTitle()%>
+        <%
+            String section = sectionEntry.getValue().toString().replaceAll("\n", "</br>");
+        %>
+        <c:if test="<%=!section.trim().isEmpty()%>">
+        <h4>${sectionEntry.key}
         </h4>
-        <p><%=sectionEntry.getValue().toString().replaceAll("\n", "</br>")%>
+        <p><%=section%>
         </p>
+    </c:if>
     </c:forEach>
 </section>
 <jsp:include page="fragments/footer.jsp"></jsp:include>

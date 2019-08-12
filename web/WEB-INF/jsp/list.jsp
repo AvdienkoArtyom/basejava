@@ -1,5 +1,3 @@
-<%@ page import="ru.mail.avdienkoartyom.model.Resume" %>
-<%@ page import="java.util.List" %>
 <%@ page import="ru.mail.avdienkoartyom.model.ContactType" %>
 <%@ page import="ru.mail.avdienkoartyom.util.ToHtmlContact" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>

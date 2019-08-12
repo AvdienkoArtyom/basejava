@@ -50,6 +50,22 @@ public class Position implements Serializable {
         return description;
     }
 
+    public void setDateStart(LocalDate dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public void setDateFinish(LocalDate dateFinish) {
+        this.dateFinish = dateFinish;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

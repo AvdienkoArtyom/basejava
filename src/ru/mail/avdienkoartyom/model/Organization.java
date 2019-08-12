@@ -44,6 +44,14 @@ public class Organization implements Serializable {
         this.positionList = positionList;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
