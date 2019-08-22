@@ -13,6 +13,18 @@ import java.util.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    public static final Resume EMPTY = new Resume();
+
+    static {
+        EMPTY.setSection(SectionType.OBJECTIVE, SimpleTextSection.EMPTY);
+        EMPTY.setSection(SectionType.PERSONAL, SimpleTextSection.EMPTY);
+        EMPTY.setSection(SectionType.ACHIEVEMENT, ListSection.EMPTY);
+        EMPTY.setSection(SectionType.QUALIFICATIONS, ListSection.EMPTY );
+        EMPTY.setSection(SectionType.EXPERIENCE, new OrganizationSection(Organization.EMPTY));
+        EMPTY.setSection(SectionType.EDUCATION, new OrganizationSection(Organization.EMPTY));
+    }
+
     private String uuid;
     private String fullName;
     private Map<ContactType, String> contact = new EnumMap<>(ContactType.class);
@@ -34,8 +46,12 @@ public class Resume implements Serializable {
         return section;
     }
 
-    public void setSection(Map<SectionType, AbstractSection> section) {
-        this.section = section;
+    public AbstractSection getSection(SectionType type) {
+        return section.get(type);
+    }
+
+    public void setSection(SectionType type, AbstractSection abstractSection) {
+        section.put(type, abstractSection);
     }
 
     public Map<ContactType, String> getContact() {

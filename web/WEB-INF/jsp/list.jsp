@@ -29,7 +29,7 @@
                 </tr>
             </c:forEach>
             <tr>
-                <td colspan="4"><a href="resume?uuid=${"newResume"}&action=edit">Добавить новое резме.</a></td>
+                <td colspan="4"><a href="resume?uuid=${"newResume"}&action=add">Добавить новое резме.</a></td>
             </tr>
         </table>
 </section>

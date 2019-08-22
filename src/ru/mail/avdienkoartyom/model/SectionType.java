@@ -1,10 +1,10 @@
 package ru.mail.avdienkoartyom.model;
 
 public enum SectionType {
-    PERSONAL("Личные качества"),
     OBJECTIVE("Позиция"),
+    PERSONAL("Личные качества"),
     ACHIEVEMENT("Достижения"),
-    QUALIFICATIONS("Клалификация"),
+    QUALIFICATIONS("Квалификации"),
     EXPERIENCE("Опыт работы"),
     EDUCATION("Образование");
 

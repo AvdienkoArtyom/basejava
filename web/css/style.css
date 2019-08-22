@@ -28,13 +28,24 @@ section{
     margin-inline-end: 20%;
 }
 
+#tableListResume{
+    align-content: start;
+ }
+
+#statusDescription{
+    font-size: large;
+}
+
 
 
 
 dl{
-    background: no-repeat scroll 0 0 #FAFAFA;
-    margin: 8px 0;
-    padding: 0;
+    #background: no-repeat scroll 0 0 #FFFFFF;
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 2px;
+    margin-inline-end: 2px;
 }
 
 dt{
@@ -50,4 +61,13 @@ dd{
 
 div.inputExpEdu{
     margin-top: 15px;
+}
+
+.button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    padding: 0px 10px;
+
 }
