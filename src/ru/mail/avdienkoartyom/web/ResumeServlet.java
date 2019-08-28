@@ -133,14 +133,18 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
             switch (type) {
                 case OBJECTIVE:
                 case PERSONAL:
-                    resume.getSection().put(type, new SimpleTextSection(value));
+                    if (value.trim().length() != 0) {
+                        resume.getSection().put(type, new SimpleTextSection(value));
+                    } else {
+                        resume.getSection().remove(type);
+                    }
                     break;
                 case QUALIFICATIONS:
                 case ACHIEVEMENT:
                     if (value != null && value.trim().length() != 0) {
                         resume.getSection().put(type, new ListSection(Arrays.asList(value.trim().split("\r\n"))));
                     } else {
-                        resume.getSection().put(type, ListSection.EMPTY);
+                        resume.getSection().remove(type);
                     }
                     break;
                 case EDUCATION:
@@ -169,7 +173,11 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
                         }
                         count++;
                     }
-                    resume.setSection(type, new OrganizationSection(organizationList));
+                    if (organizationList.size() != 0) {
+                        resume.setSection(type, new OrganizationSection(organizationList));
+                    } else {
+                        resume.getSection().remove(type);
+                    }
                     break;
             }
         }

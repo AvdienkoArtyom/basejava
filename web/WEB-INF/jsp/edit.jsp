@@ -35,10 +35,10 @@
             <h2><a>${type.title}</a></h2>
             <c:choose>
                 <c:when test="${type=='OBJECTIVE'}">
-                    <input type="text" name="${type}" size=75 value="${resume.section.get(type)}">
+                    <input type="text" name="${type}" size=75 value="${resume.section.get(type)}" placeholder="Позиция">
                 </c:when>
                 <c:when test="${type=='PERSONAL'}">
-                    <textarea name='${type}' cols=75 rows=5>${resume.section.get(type)}</textarea>
+                    <textarea name='${type}' cols=75 rows=5 placeholder="Личные качества">${resume.section.get(type)}</textarea>
                 </c:when>
                 <c:when test="${type=='QUALIFICATIONS' || type=='ACHIEVEMENT'}">
                 <textarea name='${type}' cols=75
@@ -80,14 +80,14 @@
                                     <dd><input type="text"
                                                name="${counter.count}positionStart${type}"
                                                size="56"
-                                               value="${position.dateStart}"></dd>
+                                               value="${position.dateStart}" placeholder="YYYY-MM-DD"> </dd>
                                 </dl>
                                 <dl>
                                     <dt>окончание карьеры:</dt>
                                     <dd><input type="text"
                                                name="${counter.count}positionFinish${type}"
                                                size="56"
-                                               value="${position.dateFinish}"></dd>
+                                               value="${position.dateFinish}" placeholder="YYYY-MM-DD"></dd>
                                 </dl>
                                 <dl>
                                     <dt>должность:</dt>
