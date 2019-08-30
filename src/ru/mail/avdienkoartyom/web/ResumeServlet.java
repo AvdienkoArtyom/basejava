@@ -62,6 +62,7 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
                         case EXPERIENCE:
                         case EDUCATION:
                             OrganizationSection organizationSection = (OrganizationSection) abstractSection;
+
                             List<Organization> emptyFirstOrganizations = new ArrayList<>();
                             emptyFirstOrganizations.add(Organization.EMPTY);
                             if (organizationSection != null) {
@@ -70,9 +71,11 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
                                     emptyFirstPositions.addAll(organization.getPositionList());
                                     emptyFirstPositions.add(Position.EMPTY);
                                     emptyFirstOrganizations.add(new Organization(organization.getTitle(), organization.getUrl(), emptyFirstPositions));
+                                    OrganizationSection.EMPTY.setOrganizationList(emptyFirstOrganizations);
                                 }
                             }
-                            abstractSection = new OrganizationSection(emptyFirstOrganizations);
+                            OrganizationSection.EMPTY.setOrganizationList(emptyFirstOrganizations);
+                            abstractSection = OrganizationSection.EMPTY;
                             break;
                     }
                     r.setSection(type, abstractSection);

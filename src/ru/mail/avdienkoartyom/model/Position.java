@@ -14,7 +14,7 @@ import java.util.Objects;
 public class Position implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    public static final Position EMPTY = new Position();
+    public static final Position EMPTY = new Position(null ,null,null, null);
 
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate dateStart;

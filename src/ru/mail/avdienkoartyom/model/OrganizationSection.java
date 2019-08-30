@@ -9,6 +9,8 @@ public class OrganizationSection extends AbstractSection implements Serializable
     private static final long serialVersionUID = 1L;
     private List<Organization> organizationList;
 
+    public static OrganizationSection EMPTY = new OrganizationSection(Organization.EMPTY);
+
     public OrganizationSection() {
     }
 
